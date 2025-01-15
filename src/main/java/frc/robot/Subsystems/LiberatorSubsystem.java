@@ -1,66 +1,57 @@
-// package frc.robot.Subsystems;
+package frc.robot.Subsystems;
 
-// import com.revrobotics.CANSparkLowLevel;
-// import com.revrobotics.CANSparkMax;
+import com.ctre.phoenix6.hardware.TalonFX;
 
-// public class LiberatorSubsystem extends SubsystemBase {
-//     private static CANSparkMax liberatorMotor1 = new CANSparkMax(9, CANSparkLowLevel.MotorType.kBrushless);
-//     private static CANSparkMax liberatorMotor2 = new CANSparkMax(12, CANSparkLowLevel.MotorType.kBrushless);
-//     private static boolean lock = true;
-//     liberatorMotor2.
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-//     public boolean getLock(){
-//         return lock();
-//     }
+import edu.wpi.first.wpilibj.DigitalInput;
 
-//     public void setLock(boolean lock){
-//         LiberatorSubsystem.lock = lock;
-//     }
+public class LiberatorSubsystem extends SubsystemBase {
+    private static TalonFX liberatorMotor1 = new TalonFX(15);
+    private static TalonFX liberatorMotor2 = new TalonFX(69);
+    private DigitalInput inDeep = new DigitalInput(0);
+    private DigitalInput in = new DigitalInput(0);
 
-//     public void stop(){
-//         liberatorMotor1.set(0);
-//         liberatorMotor2.set(0);
-//     }
+    private static boolean lock;
+      
+    public LiberatorSubsystem(){
+        liberatorMotor2.setInverted(true);
+        lock = false;
+    }
 
-//     public void liberate(){
-//         liberatorMotor1.set(-1);
-//         liberatorMotor2.set(-1);
-//     }
+    public boolean getLock(){
+        return lock;
+    }
 
-//     public void run(double sigmajava){
-//         liberatorMotor1.set(sigmajava);
-//         liberatorMotor2.set(sigmajava);
-//     }
+    public void setLock(boolean lock){
+        LiberatorSubsystem.lock = lock;
+    }
 
-//     public void intake(){
-//         liberatorMotor1.set(1);
-//         liberatorMotor2.set(1);
-//     }
+    public void stop(){
+        liberatorMotor1.set(0);
+        liberatorMotor2.set(0);
+    }
 
-//     public void inDeep(){
-        
-//     }
-// }
+    public void liberate(){
+        liberatorMotor1.set(-0.25);
+        liberatorMotor2.set(-0.25);
+    }
 
-//Liberator Subsystem: 
-//motors 
-//- Liberator Motor 1
-//- Liberator Motor 2 
+    public void run(double speed){
+        liberatorMotor1.set(speed);
+        liberatorMotor2.set(speed);
+    }
 
-//Laser Cans: 
-//in: first sensor, active control 
-//inDeep second sensor, coral can be liberated
+    public void intake(){
+        liberatorMotor1.set(0.25);
+        liberatorMotor2.set(0.25);
+    }
 
-//Functions:
-//- private boolean lock functions 
-//- getLock returns whether or not liberator is locked (public) 
-// - set Lock locks/*  *//* /unlocks liberator (public) 
-//- stop: stops motors 
-//- liberate: sets motor to the valve we chose for liberator 
-//- Stop: sets both motors to zero 
-//- run: takes in a parameter, sets motors to that valve 
-//- intake: runs motors backward to set valve Ile in: returns valve of the in laserscan 
-//- inDeep: returns value off the in Deep laser con 
-
-//in the constructor: 
-//- Set liberator Motor 2 to inverted */
+    public boolean inDeep(){
+        return !inDeep.get();
+    }
+    
+    public boolean in(){
+        return !in.get();
+    }
+}
