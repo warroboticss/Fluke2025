@@ -1,6 +1,8 @@
 package frc.robot.Subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj.Encoder;
@@ -11,15 +13,14 @@ public class ElevatorSubsystem extends SubsystemBase{
 
     private static boolean lock;
 
-    private final Encoder m_elevatorEncoder =
-      new Encoder(
-          ShooterConstants.kEncoderPorts[0],
-          ShooterConstants.kEncoderPorts[1],
-          ShooterConstants.kEncoderReversed);
-    
     
     public ElevatorSubsystem(){
         
+    }
+
+    public void run(Double position){
+        PositionDutyCycle pid = new PositionDutyCycle(0, 0, lock, 0, 0, lock, lock, lock);
+        elevatorMotorLeft.setControl(pid);
     }
     
 }

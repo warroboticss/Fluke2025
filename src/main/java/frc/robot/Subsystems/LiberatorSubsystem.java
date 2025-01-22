@@ -54,4 +54,19 @@ public class LiberatorSubsystem extends SubsystemBase {
     public boolean in(){
         return !in.get();
     }
+
+    public void state(){
+        if(in() && !inDeep()){
+            liberate();
+        }
+        else if(in() && inDeep()){
+            stop();
+        }
+        else if(!in() && !inDeep()){
+            liberate();
+        }
+        else if(!in() && inDeep()){
+            intake();
+        }
+    }
 }

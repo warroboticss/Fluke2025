@@ -6,10 +6,22 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Commands.DefaultLiberatorCmd;
+import frc.robot.Subsystems.LiberatorSubsystem;
 
 public class RobotContainer {
+
+  private final LiberatorSubsystem liberatorSubsystem = new LiberatorSubsystem();
+
+  private final CommandXboxController controller = new CommandXboxController(0);
+  private final Trigger a = controller.a();
+
   public RobotContainer() {
     configureBindings();
+
+    liberatorSubsystem.setDefaultCommand(new DefaultLiberatorCmd(liberatorSubsystem, () -> a.getAsBoolean()));
   }
 
   private void configureBindings() {}
