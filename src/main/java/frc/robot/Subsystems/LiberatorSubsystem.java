@@ -1,5 +1,6 @@
 package frc.robot.Subsystems;
 
+import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -12,11 +13,17 @@ public class LiberatorSubsystem extends SubsystemBase {
     private DigitalInput inDeep = new DigitalInput(0);
     private DigitalInput in = new DigitalInput(0);
 
+    Orchestra m_orchestra = new Orchestra();
+    
+
     private static boolean lock;
       
     public LiberatorSubsystem(){
         liberatorMotor2.setInverted(true);
         lock = false;
+        m_orchestra.addInstrument(liberatorMotor1);
+        m_orchestra.addInstrument(liberatorMotor2);
+        m_orchestra.loadMusic("output.chrp");
     }
 
     public boolean getLock(){
