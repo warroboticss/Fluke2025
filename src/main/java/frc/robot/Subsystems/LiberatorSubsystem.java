@@ -1,6 +1,7 @@
 package frc.robot.Subsystems;
 
 import com.ctre.phoenix6.Orchestra;
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -19,7 +20,7 @@ public class LiberatorSubsystem extends SubsystemBase {
     private static boolean lock;
       
     public LiberatorSubsystem(){
-        liberatorMotor2.setInverted(true);
+        liberatorMotor2.setControl(new Follower(liberatorMotor1.getDeviceID(), true));
         lock = false;
         m_orchestra.addInstrument(liberatorMotor1);
         m_orchestra.addInstrument(liberatorMotor2);
@@ -36,22 +37,18 @@ public class LiberatorSubsystem extends SubsystemBase {
 
     public void stop(){
         liberatorMotor1.set(0);
-        liberatorMotor2.set(0);
     }
 
     public void liberate(){
         liberatorMotor1.set(-0.25);
-        liberatorMotor2.set(-0.25);
     }
 
     public void run(double speed){
         liberatorMotor1.set(speed);
-        liberatorMotor2.set(speed);
     }
 
     public void intake(){
         liberatorMotor1.set(0.25);
-        liberatorMotor2.set(0.25);
     }
 
     public boolean inDeep(){

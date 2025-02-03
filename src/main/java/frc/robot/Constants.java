@@ -2,6 +2,9 @@ package frc.robot;
 
 public class Constants {
 
-   public static double ROTATIONS_TO_DISTANCE = 1;
+   public static double DISTANCE_TO_ROTATIONS = 1;
+   public static double TICKS_PER_ROTATION = 2048;
+   public static double ROTATIONS_TO_METERS = 1;
+   public static double INCHES_TO_METERS = 0.0254;
     
 }

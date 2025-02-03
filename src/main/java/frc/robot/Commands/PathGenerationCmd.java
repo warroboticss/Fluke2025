@@ -28,25 +28,25 @@ public class PathGenerationCmd extends Command {
     }
     
     public void execute(){
-      //   Pose2d currentPose = swerve.getPose();
+        Pose2d currentPose = swerve.getState().Pose;
 
-      //   Pose2d startPose = new Pose2d(currentPose.getTranslation(), new Rotation2d());
-      //   Pose2d endPose = new Pose2d(currentPose.getTranslation().plus(new Translation2d(2.0,0.0)), new Rotation2d());
+        Pose2d startPose = new Pose2d(currentPose.getTranslation(), new Rotation2d());
+        Pose2d endPose = new Pose2d(currentPose.getTranslation().plus(new Translation2d(x.get(),y.get())), new Rotation2d());
 
-      //   List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(startPose, endPose);
-      // PathPlannerPath path = new PathPlannerPath(
-      //   waypoints, 
-      //   new PathConstraints(
-      //     0.1, 0.2, 
-      //     Units.degreesToRadians(360), Units.degreesToRadians(540)
-      //   ),
-      //   null, // Ideal starting state can be null for on-the-fly paths
-      //   new GoalEndState(0.0, currentPose.getRotation())
-      // );
+        List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(startPose, endPose);
+        PathPlannerPath path = new PathPlannerPath(
+        waypoints, 
+        new PathConstraints(
+          0.1, 0.2, 
+          Units.degreesToRadians(360), Units.degreesToRadians(540)
+        ),
+        null, // Ideal starting state can be null for on-the-fly paths
+        new GoalEndState(0.0, currentPose.getRotation())
+      );
 
-      // // Prevent this path from being flipped on the red alliance, since the given positions are already correct
-      // path.preventFlipping = true;
+      // Prevent this path from being flipped on the red alliance, since the given positions are already correct
+      path.preventFlipping = true;
 
-      // AutoBuilder.followPath(path).schedule();
+      AutoBuilder.followPath(path).schedule();
     }
 }
