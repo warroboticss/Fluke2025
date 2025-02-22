@@ -14,8 +14,8 @@ import edu.wpi.first.wpilibj.PowerDistribution;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 
 public class ElevatorSubsystem extends SubsystemBase{
-    private static TalonFX elevatorMotorLeft = new TalonFX(15);
-    private static TalonFX elevatorMotorRight = new TalonFX(15);
+    private static TalonFX elevatorMotorLeft = new TalonFX(17);
+    private static TalonFX elevatorMotorRight = new TalonFX(18);
 
     private static ElevatorFeedforward feed = new ElevatorFeedforward(0, 0, 0);
     private static PowerDistribution pdh = new PowerDistribution(0,ModuleType.kRev);
@@ -37,11 +37,21 @@ public class ElevatorSubsystem extends SubsystemBase{
     }
 
     public void home(){
-        while(!home.get()){
-            elevatorMotorLeft.set(0.2);
+        if(!lock){
+            while(!home.get()){
+                elevatorMotorLeft.set(0.2);
+            }
+            elevatorMotorLeft.set(0);
+            elevatorMotorLeft.setPosition(0);
         }
-        elevatorMotorLeft.set(0);
-        elevatorMotorLeft.setPosition(0);
+    }
+
+    public boolean getLock(){
+        return lock;
+    }
+
+    public void setLock(boolean locked){
+        lock = locked;
     }
     
 }

@@ -7,17 +7,17 @@ import frc.robot.Subsystems.LiberatorSubsystem;
 
 
 public class DefaultLiberatorCmd extends Command{
-    private LiberatorSubsystem liberator;
-    private Supplier<Boolean> liberating;
+    private static LiberatorSubsystem liberator;
+    private Supplier<Boolean> intaking;
 
-    public DefaultLiberatorCmd(LiberatorSubsystem liberator, Supplier<Boolean> liberating){
-        this.liberator = liberator;
-        this.liberating = liberating;
+    public DefaultLiberatorCmd(LiberatorSubsystem liberator, Supplier<Boolean> intaking){
+        DefaultLiberatorCmd.liberator = liberator;
+        this.intaking = intaking;
     }
 
     public void execute(){
-        if(liberating.get()){
-            liberator.liberate();
+        if(intaking.get()){
+            liberator.intake();
         }
         else {
             liberator.state();

@@ -17,12 +17,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.CommandSwerveDrivetrain;
 
 public class PathGenerationCmd extends Command {
-    private final CommandSwerveDrivetrain swerve;
+    private static CommandSwerveDrivetrain swerve;
     private final Supplier<Double> x;
     private final Supplier<Double> y;
+    private Pose2d endPose;
 
     public PathGenerationCmd(CommandSwerveDrivetrain swerve, Supplier<Double> x, Supplier<Double> y){
-        this.swerve = swerve;
+        PathGenerationCmd.swerve = swerve;
         this.x = x;
         this.y = y;
     }
@@ -31,7 +32,7 @@ public class PathGenerationCmd extends Command {
         Pose2d currentPose = swerve.getState().Pose;
 
         Pose2d startPose = new Pose2d(currentPose.getTranslation(), new Rotation2d());
-        Pose2d endPose = new Pose2d(currentPose.getTranslation().plus(new Translation2d(x.get(),y.get())), new Rotation2d());
+        endPose = new Pose2d(currentPose.getTranslation().plus(new Translation2d(x.get(),y.get())), new Rotation2d());
 
         List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(startPose, endPose);
         PathPlannerPath path = new PathPlannerPath(
@@ -48,5 +49,12 @@ public class PathGenerationCmd extends Command {
       path.preventFlipping = true;
 
       AutoBuilder.followPath(path).schedule();
+    }
+
+    public boolean isFinished(){
+      if(swerve.getState().Pose.equals(endPose)){
+        return true;
+      }
+      return false;
     }
 }

@@ -10,6 +10,8 @@ import static edu.wpi.first.units.Units.RotationsPerSecond;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
+import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -17,14 +19,20 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.Commands.DefaultLiberatorCmd;
+import frc.robot.Commands.ElevatorCmd;
+import frc.robot.Commands.LiberateCommand;
+import frc.robot.Commands.ScoreCmd;
 import frc.robot.Subsystems.CommandSwerveDrivetrain;
+import frc.robot.Subsystems.ElevatorSubsystem;
 import frc.robot.Subsystems.LiberatorSubsystem;
 import frc.robot.generated.TunerConstants;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+
+
 
 public class RobotContainer {
 
@@ -34,12 +42,13 @@ NetworkTableEntry ty = table.getEntry("ty");
 NetworkTableEntry ta = table.getEntry("ta");
 
 //read values periodically
-double x = tx.getDouble(0.0);
-double y = ty.getDouble(0.0);
+double xLime = tx.getDouble(0.0);
+double yLime = ty.getDouble(0.0);
 double area = ta.getDouble(0.0);
 
 
   private final LiberatorSubsystem liberatorSubsystem = new LiberatorSubsystem();
+  private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 
   private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
@@ -56,44 +65,60 @@ double area = ta.getDouble(0.0);
     private final CommandXboxController controller = new CommandXboxController(0);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-  private final Trigger a = controller.a();
+    private final Trigger a = controller.a();
+    private final Trigger b = controller.b();
+    private final Trigger x = controller.x();
+    private final Trigger y = controller.y();
+
+    //private final SendableChooser<Command> autoChooser;
 
   public RobotContainer() {
+    //autoChooser = AutoBuilder.buildAutoChooser("Test");
+    
+    liberatorSubsystem.setDefaultCommand(new LiberateCommand(liberatorSubsystem, elevatorSubsystem));
+    elevatorSubsystem.setDefaultCommand(elevatorSubsystem.run(() -> elevatorSubsystem.home()));
     configureBindings();
 
-    liberatorSubsystem.setDefaultCommand(new DefaultLiberatorCmd(liberatorSubsystem, () -> a.getAsBoolean()));
   }
 
   private void configureBindings() {
      drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(-controller.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(-controller.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                drive.withVelocityX(-1 * Math.abs(controller.getLeftY())* controller.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
+                    .withVelocityY(-1 * Math.abs(controller.getLeftX())* controller.getLeftX() * MaxSpeed) // Drive left with negative X (left)
                     .withRotationalRate(-controller.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
             )
         );
 
-        controller.a().whileTrue(drivetrain.applyRequest(() -> brake));
-        controller.b().whileTrue(drivetrain.applyRequest(() ->
-            point.withModuleDirection(new Rotation2d(-controller.getLeftY(), -controller.getLeftX()))
-        ));
+        // BRAKE
+        //controller.button(8).whileTrue(drivetrain.applyRequest(() -> brake));
+        // SMTH ELSE THAT ALSO WORKS LIKE A BRAKE BUT EXTREMELY WEIRD
+        // controller.b().whileTrue(drivetrain.applyRequest(() ->
+        //     point.withModuleDirection(new Rotation2d(-controller.getLeftY(), -controller.getLeftX()))
+        // ));
 
         // Run SysId routines when holding back/start and X/Y.
         // Note that each routine should be run exactly once in a single log.
-        controller.back().and(controller.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-        controller.back().and(controller.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-        controller.start().and(controller.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        controller.start().and(controller.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
+        // REVERSING?
+        // controller.back().and(controller.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
+        // controller.back().and(controller.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
+        // controller.start().and(controller.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
+        // controller.start().and(controller.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         // reset the field-centric heading on left bumper press
-        controller.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        controller.rightBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+
+        a.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 1, controller.rightBumper().getAsBoolean()));
+        b.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 2, controller.rightBumper().getAsBoolean()));
+        x.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 3, false));
+        y.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 4, false));
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
   }
 
   public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
+    return new PathPlannerAuto("Test");
   }
 }

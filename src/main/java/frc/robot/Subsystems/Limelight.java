@@ -10,27 +10,65 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 
 public class Limelight extends SubsystemBase{
 
-NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-    NetworkTableEntry ty = table.getEntry("ty");
-    double targetOffsetAngle_Vertical = ty.getDouble(0.0);
 
-    // how many degrees back is your limelight rotated from perfectly vertical?
-    double limelightMountAngleDegrees = 25.0; 
+    // limelight one starts here
 
-    // distance from the center of the Limelight lens to the floor
-    double limelightLensHeightInches = 20.0; 
 
-    // distance from the target to the floor
-    double goalHeightInches = 60.0; 
+NetworkTable tableLimelight1 = NetworkTableInstance.getDefault().getTable("Limelight1");
+    NetworkTableEntry ty1 = tableLimelight1.getEntry("ty");
 
-    double angleToGoalDegrees = limelightMountAngleDegrees + targetOffsetAngle_Vertical;
-    double angleToGoalRadians = angleToGoalDegrees * (3.14159 / 180.0);
+    double limelight1TargetOffsetAngle_Vertical = ty1.getDouble(0.0);
 
-    //calculate distance
-    double distanceFromLimelightToGoalInches = (goalHeightInches - limelightLensHeightInches) / Math.tan(angleToGoalRadians);
 
-    //converts distance in inches to meters
-    double distanceFromLimelightToGoalMeters = distanceFromLimelightToGoalInches * Constants.INCHES_TO_METERS;
+    // how many degrees back is your limelight rotated from perfectly vertical? (for limelight one)
+    double limelight1MountAngleDegrees = 25.0; 
+
+    // distance from the center of the Limelight lens to the floor for limelight one
+    double limelight1LensHeightInches = 20.0; 
+
+    // distance from the target to the floor for limelight one
+    double goalHeightInchesLimelight1 = 60.0; 
+
+    // vertical offset for limelight one
+    double angleToGoalDegreesLimelight1 = limelight1MountAngleDegrees + limelight1TargetOffsetAngle_Vertical;
+    double angleToGoalRadiansLimelight1 = angleToGoalDegreesLimelight1 * (3.14159 / 180.0);
+
+    //calculate distance for limelight one
+    double distanceFromLimelight1ToGoalInches = (goalHeightInchesLimelight1 - limelight1LensHeightInches) / Math.tan(angleToGoalRadiansLimelight1);
+
+    //converts distance in inches to meters for limelight one
+    double distanceFromLimelight1ToGoalMeters = distanceFromLimelight1ToGoalInches * Constants.INCHES_TO_METERS;
+
+
+
+    // limelight three starts here
+
+
+
+NetworkTable tableLimelight3 = NetworkTableInstance.getDefault().getTable("Limelight3");
+    NetworkTableEntry ty3 = tableLimelight1.getEntry("ty");
+
+    double limelight3TargetOffsetAngle_Vertical = ty1.getDouble(0.0);
+
+
+    // how many degrees back is your limelight rotated from perfectly vertical? (for limelight one)
+    double limelight3MountAngleDegrees = 25.0; 
+
+    // distance from the center of the Limelight lens to the floor for limelight one
+    double limelight3LensHeightInches = 20.0; 
+
+    // distance from the target to the floor for limelight one
+    double goalHeightInchesLimelight3 = 60.0; 
+
+    // vertical offset for limelight one
+    double angleToGoalDegreesLimelight3 = limelight3MountAngleDegrees + limelight1TargetOffsetAngle_Vertical;
+    double angleToGoalRadiansLimelight3 = angleToGoalDegreesLimelight1 * (3.14159 / 180.0);
+
+    //calculate distance for limelight one
+    double distanceFromLimelight3ToGoalInches = (goalHeightInchesLimelight3 - limelight3LensHeightInches) / Math.tan(angleToGoalRadiansLimelight1);
+
+    //converts distance in inches to meters for limelight one
+    double distanceFromLimelight3ToGoalMeters = distanceFromLimelight1ToGoalInches * Constants.INCHES_TO_METERS;
 
 }
 

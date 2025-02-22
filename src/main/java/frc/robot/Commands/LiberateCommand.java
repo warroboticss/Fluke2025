@@ -1,19 +1,28 @@
 package frc.robot.Commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Subsystems.ElevatorSubsystem;
 import frc.robot.Subsystems.LiberatorSubsystem;
 
+
 public class LiberateCommand extends Command{
-    private LiberatorSubsystem liberator;
+    private static LiberatorSubsystem liberator;
+    private static ElevatorSubsystem elevator;
+
+    public LiberateCommand(LiberatorSubsystem liberator, ElevatorSubsystem elevator){
+        LiberateCommand.liberator = liberator;
+
+        addRequirements(liberator);
+    }
 
     public void initialize(){
+        elevator.setLock(true);
         //slow drive
     }
 
+    @Override
     public void execute(){
-        if (!liberator.getLock()){
-            liberator.liberate();
-        }
+        liberator.liberate();
     }
 
     public boolean isFinished(){
@@ -22,6 +31,7 @@ public class LiberateCommand extends Command{
 
     public void end(){
         liberator.stop();
+        elevator.setLock(false);
         //send elevator back to home
         //regular drive
     }
