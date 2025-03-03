@@ -4,12 +4,13 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import frc.robot.Constants;
 import frc.robot.Subsystems.ElevatorSubsystem;
 
 public class ElevatorCmd extends Command{
 
     private static ElevatorSubsystem elevator;
-    private double setpoint;;
+    private double setpoint;
 
     // height: 1,2,3,4 for each level
     public ElevatorCmd(ElevatorSubsystem elevator, double setpoint){
@@ -24,6 +25,16 @@ public class ElevatorCmd extends Command{
         elevator.setLock(true);
     }
 
+    @Override
+    public void execute(){
+        elevator.run((setpoint*Constants.INCHES_TO_ROTATIONS_ELEVATOR)-elevator.getPosition());
+    }
+
+    @Override
+    public boolean isFinished(){
+        return (elevator.getPosition() == setpoint*Constants.INCHES_TO_ROTATIONS_ELEVATOR);
+            
+    }
 
     
 }

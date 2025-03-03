@@ -13,9 +13,9 @@ public class Limelight extends SubsystemBase {
     private final NetworkTableEntry ty = table.getEntry("ty");
 
     // Limelight parameters
-    private final double limelightMountAngleDegrees = 0;
-    private final double limelightLensHeightInches = 0;
-    private final double goalHeightInches = 0;
+    private final double limelightMountAngleDegrees = 37;
+    private final double limelightLensHeightInches = 7.5;
+    private final double goalHeightInches = 12;
 
     // Dummy values above
 

@@ -48,7 +48,7 @@ double area = ta.getDouble(0.0);
 
 
   private final LiberatorSubsystem liberatorSubsystem = new LiberatorSubsystem();
-  private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+  // private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 
   private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
@@ -75,8 +75,8 @@ double area = ta.getDouble(0.0);
   public RobotContainer() {
     //autoChooser = AutoBuilder.buildAutoChooser("Test");
     
-    liberatorSubsystem.setDefaultCommand(new LiberateCommand(liberatorSubsystem, elevatorSubsystem));
-    elevatorSubsystem.setDefaultCommand(elevatorSubsystem.run(() -> elevatorSubsystem.home()));
+    // liberatorSubsystem.setDefaultCommand(liberatorSubsystem.run(() -> liberatorSubsystem.state()));
+    // elevatorSubsystem.setDefaultCommand(elevatorSubsystem.run(() -> elevatorSubsystem.home()));
     configureBindings();
 
   }
@@ -109,10 +109,10 @@ double area = ta.getDouble(0.0);
         // reset the field-centric heading on left bumper press
         controller.rightBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
-        a.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 1, controller.rightBumper().getAsBoolean()));
-        b.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 2, controller.rightBumper().getAsBoolean()));
-        x.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 3, false));
-        y.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 4, false));
+        // a.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 1, controller.rightBumper().getAsBoolean()));
+        // b.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 2, controller.rightBumper().getAsBoolean()));
+        // x.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 3, false));
+        // y.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 4, false));
 
         drivetrain.registerTelemetry(logger::telemeterize);
 

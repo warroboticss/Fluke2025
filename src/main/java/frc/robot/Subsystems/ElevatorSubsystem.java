@@ -33,7 +33,7 @@ public class ElevatorSubsystem extends SubsystemBase{
         // setpoint in rotations
         // velocity should be in rotations per seconds
         //pid = new PositionDutyCycle(setpoint, 0.0, false, (feed.calculate(0))/pdh.getVoltage(), 0.0, false, false, false);
-        elevatorMotorLeft.setControl(pid.withPosition(distance * Constants.DISTANCE_TO_ROTATIONS));
+        elevatorMotorLeft.setControl(pid.withPosition(distance * Constants.INCHES_TO_ROTATIONS_ELEVATOR));
     }
 
     public void home(){
@@ -52,6 +52,10 @@ public class ElevatorSubsystem extends SubsystemBase{
 
     public void setLock(boolean locked){
         lock = locked;
+    }
+
+    public double getPosition(){
+        return elevatorMotorLeft.getPosition().getValueAsDouble();
     }
     
 }

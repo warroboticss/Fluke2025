@@ -5,15 +5,15 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.ElevatorSubsystem;
 import frc.robot.Subsystems.LiberatorSubsystem;
 
+public class RemoveAlgae extends Command{
 
-public class LiberateCommand extends Command{
-    private static LiberatorSubsystem liberator;
+    public static LiberatorSubsystem liberator;
     private static ElevatorSubsystem elevator;
     private static Timer time = new Timer();
-
-    public LiberateCommand(LiberatorSubsystem liberator, ElevatorSubsystem elevator){
-        LiberateCommand.liberator = liberator;
-        time.start();
+    
+    public RemoveAlgae(LiberatorSubsystem liberator, ElevatorSubsystem elevator){
+        RemoveAlgae.liberator = liberator;
+        RemoveAlgae.elevator = elevator;
 
         addRequirements(liberator);
     }
@@ -25,17 +25,22 @@ public class LiberateCommand extends Command{
 
     @Override
     public void execute(){
-        liberator.liberate();
+        liberator.removeAlgae();
+        if(liberator.getAlgaePosition() >= 42.66){
+            time.start();
+            
+        }
     }
 
     public boolean isFinished(){
-        return time.get() >= 3;
+        return time.get() >= 2;
     }
 
     public void end(){
         time.reset();
-        liberator.stop();
+        liberator.resetAlgae();
         elevator.setLock(false);
         elevator.home();
     }
+    
 }

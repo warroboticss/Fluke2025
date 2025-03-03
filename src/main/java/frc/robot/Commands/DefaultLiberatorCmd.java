@@ -16,12 +16,12 @@ public class DefaultLiberatorCmd extends Command{
     }
 
     public void execute(){
-        if(intaking.get()){
-            liberator.intake();
-        }
-        else {
-            liberator.state();
-        }
+        // if(intaking.get()){
+        //     liberator.intake();
+        // }
+        // else {
+        //     liberator.state();
+        // }
     }
     
 }
