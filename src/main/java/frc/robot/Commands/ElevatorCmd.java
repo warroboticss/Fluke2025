@@ -27,12 +27,15 @@ public class ElevatorCmd extends Command{
 
     @Override
     public void execute(){
-        elevator.run((setpoint*Constants.INCHES_TO_ROTATIONS_ELEVATOR)-elevator.getPosition());
+    //    elevator.run((setpoint*Constants.INCHES_TO_ROTATIONS_ELEVATOR));
+        System.out.println("RAN");
+    elevator.test();
+        //elevator.run((setpoint*Constants.INCHES_TO_ROTATIONS_ELEVATOR));
     }
 
     @Override
     public boolean isFinished(){
-        return (elevator.getPosition() == setpoint*Constants.INCHES_TO_ROTATIONS_ELEVATOR);
+        return elevator.atHeight();
             
     }
 

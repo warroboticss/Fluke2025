@@ -33,9 +33,11 @@ public class LiberateCommand extends Command{
     }
 
     public void end(){
+        time.stop();
         time.reset();
         liberator.stop();
         elevator.setLock(false);
         elevator.home();
+        liberator.setCoralToggle(false);
     }
 }

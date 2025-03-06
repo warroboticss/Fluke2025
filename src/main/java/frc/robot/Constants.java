@@ -6,6 +6,7 @@ public class Constants {
    public static double TICKS_PER_ROTATION = 2048;
    public static double INCHES_TO_METERS = 0.0254;
 
+   // agae 1, algae 2, l1, l2, l3, l4
    public static double[] ELEVATOR_HEIGHTS = {0, 7.5, 0, 3.65, 11.5, 24.75};
 
     
