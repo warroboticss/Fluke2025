@@ -15,6 +15,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.CommandSwerveDrivetrain;
+import frc.robot.Subsystems.Limelight;
 
 public class PathGenerationCmd extends Command {
     private static CommandSwerveDrivetrain swerve;
@@ -22,7 +23,7 @@ public class PathGenerationCmd extends Command {
     private final Supplier<Double> y;
     private Pose2d endPose;
 
-    public PathGenerationCmd(CommandSwerveDrivetrain swerve, Supplier<Double> x, Supplier<Double> y){
+    public PathGenerationCmd(CommandSwerveDrivetrain swerve, Supplier<Double> x, Supplier<Double> y, Limelight lime){
         PathGenerationCmd.swerve = swerve;
         this.x = x;
         this.y = y;

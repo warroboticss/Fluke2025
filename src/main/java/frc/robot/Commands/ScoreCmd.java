@@ -10,8 +10,9 @@ public class ScoreCmd extends SequentialCommandGroup{
     public ScoreCmd(ElevatorSubsystem elevator, LiberatorSubsystem liberator, int height, boolean score){
         if(score){
             addCommands(
-                new ElevatorCmd(elevator, Constants.ELEVATOR_HEIGHTS[height+1]),
-                new LiberateCommand(liberator, elevator));
+                new ElevatorCmd(elevator, Constants.ELEVATOR_HEIGHTS[height+1])
+                //new LiberateCommand(liberator, elevator));
+            );
         }
         else{
             addCommands(

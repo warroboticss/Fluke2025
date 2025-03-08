@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Commands.ElevatorCmd;
+import frc.robot.Commands.HomeElevatorCmd;
 import frc.robot.Commands.LiberateCommand;
 import frc.robot.Commands.RemoveAlgae;
 import frc.robot.Commands.ScoreCmd;
@@ -114,9 +115,14 @@ double area = ta.getDouble(0.0);
         // b.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 2, controller.rightBumper().getAsBoolean()));
         // x.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 3, false));
         // y.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 4, false));
-        a.onTrue(new ElevatorCmd(elevatorSubsystem, 3.65));
 
-        //a.onTrue(elevatorSubsystem.runOnce(()->elevatorSubsystem.test()));
+
+        //a.onTrue(liberatorSubsystem.runOnce(() -> liberatorSubsystem.test()));
+         a.onTrue(new ElevatorCmd(elevatorSubsystem, 4));
+         b.onTrue(new HomeElevatorCmd(elevatorSubsystem));
+         controller.leftBumper().onTrue(new LiberateCommand(liberatorSubsystem, elevatorSubsystem));
+        //a.onTrue(new RemoveAlgae(liberatorSubsystem, elevatorSubsystem));
+        //a.onTrue(liberatorSubsystem.runOnce(() -> liberatorSubsystem.removeAlgae()));
 
         //controller.leftBumper().onTrue(new RemoveAlgae(liberatorSubsystem, elevatorSubsystem));
 

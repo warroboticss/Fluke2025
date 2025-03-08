@@ -9,17 +9,19 @@ import frc.robot.Subsystems.LiberatorSubsystem;
 public class LiberateCommand extends Command{
     private static LiberatorSubsystem liberator;
     private static ElevatorSubsystem elevator;
-    private static Timer time = new Timer();
+    private Timer time = new Timer();
 
     public LiberateCommand(LiberatorSubsystem liberator, ElevatorSubsystem elevator){
         LiberateCommand.liberator = liberator;
-        time.start();
+        LiberateCommand.elevator = elevator;
+        
 
         addRequirements(liberator);
     }
 
     public void initialize(){
         elevator.setLock(true);
+        time.start();
         //slow drive
     }
 
