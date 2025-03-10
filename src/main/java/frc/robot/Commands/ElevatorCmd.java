@@ -38,7 +38,7 @@ public class ElevatorCmd extends Command{
 
     @Override
     public boolean isFinished(){
-        return time.get() >= 8;    
+        return Math.abs(elevator.getPosition() - (setpoint*Constants.ROTATIONS_PER_INCH_ELEVATOR)) < 0.2;    
     }
 
     public void end(){

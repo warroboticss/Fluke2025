@@ -33,7 +33,7 @@ public class HomeElevatorCmd extends Command{
 
     @Override
     public boolean isFinished(){
-        return false;   
+        return elevator.getHome();   
     }
 
     public void end(){

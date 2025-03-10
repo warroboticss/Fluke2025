@@ -118,7 +118,7 @@ double area = ta.getDouble(0.0);
 
 
         //a.onTrue(liberatorSubsystem.runOnce(() -> liberatorSubsystem.test()));
-         a.onTrue(new ElevatorCmd(elevatorSubsystem, 4));
+         a.onTrue(new ElevatorCmd(elevatorSubsystem, 2));
          b.onTrue(new HomeElevatorCmd(elevatorSubsystem));
          controller.leftBumper().onTrue(new LiberateCommand(liberatorSubsystem, elevatorSubsystem));
         //a.onTrue(new RemoveAlgae(liberatorSubsystem, elevatorSubsystem));

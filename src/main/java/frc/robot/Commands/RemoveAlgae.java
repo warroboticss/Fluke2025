@@ -9,7 +9,7 @@ public class RemoveAlgae extends Command{
 
     public static LiberatorSubsystem liberator;
     private static ElevatorSubsystem elevator;
-    //private static Timer time = new Timer();
+    private static Timer time = new Timer();
     
     public RemoveAlgae(LiberatorSubsystem liberator, ElevatorSubsystem elevator){
         RemoveAlgae.liberator = liberator;
@@ -29,19 +29,18 @@ public class RemoveAlgae extends Command{
     public void execute(){
         System.out.println("RAN");
         liberator.removeAlgae();
-        // if(liberator.getAlgaePosition() >= 42.66){
-        //     time.start();
-            
-        // }
+        if(liberator.getAlgaePosition() >= 42.66){
+            time.start();
+        }
     }
 
     public boolean isFinished(){
-        //return time.get() >= 2;
-        return false;
+        return time.get() >= 2;
     }
 
     public void end(){
-        //time.reset();
+        time.stop();
+        time.reset();
         liberator.resetAlgae();
         elevator.setLock(false);
         elevator.home();
