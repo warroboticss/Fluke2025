@@ -72,14 +72,14 @@ double area = ta.getDouble(0.0);
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
-    // private final CommandXboxController controller = new CommandXboxController(1);
-    private final CommandXboxController manualController = new CommandXboxController(0);
+    private final CommandXboxController controller = new CommandXboxController(0);
+    private final CommandXboxController manualController = new CommandXboxController(1);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-    // private final Trigger a = controller.a();
-    // private final Trigger b = controller.b();
-    // private final Trigger x = controller.x();
-    // private final Trigger y = controller.y();
+    private final Trigger a = controller.a();
+    private final Trigger b = controller.b();
+    private final Trigger x = controller.x();
+    private final Trigger y = controller.y();
 
     //private final SendableChooser<Command> autoChooser;
 
@@ -93,24 +93,24 @@ double area = ta.getDouble(0.0);
   }
 
   private void configureBindings() {
-    //  drivetrain.setDefaultCommand(
-    //         // Drivetrain will execute this command periodically
-    //         drivetrain.applyRequest(() ->
-    //             drive.withVelocityX(-1 * Math.abs(controller.getLeftY())* controller.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-    //                 .withVelocityY(-1 * Math.abs(controller.getLeftX())* controller.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-    //                 .withRotationalRate(-controller.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
-    //         )
-    //     );
+     drivetrain.setDefaultCommand(
+            // Drivetrain will execute this command periodically
+            drivetrain.applyRequest(() ->
+                drive.withVelocityX(-1 * Math.abs(controller.getLeftY())* controller.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
+                    .withVelocityY(-1 * Math.abs(controller.getLeftX())* controller.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+                    .withRotationalRate(-controller.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+            )
+        );
 
 
-    //     // reset the field-centric heading on left bumper press
-    //     controller.rightBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        // reset the field-centric heading on left bumper press
+        controller.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
 
-        // a.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 1, controller.rightBumper().getAsBoolean()));
-        // b.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 2, controller.rightBumper().getAsBoolean()));
-        // x.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 3, false));
-        // y.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 4, false));
+        a.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 1, controller.rightBumper().getAsBoolean()));
+        b.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 2, controller.rightBumper().getAsBoolean()));
+        x.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 3, false));
+        y.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 4, false));
 
 
         // manual controls
