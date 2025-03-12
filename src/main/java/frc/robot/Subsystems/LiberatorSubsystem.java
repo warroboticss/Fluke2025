@@ -37,7 +37,7 @@ public class LiberatorSubsystem extends SubsystemBase {
         m_orchestra.addInstrument(liberatorMotor1);
         m_orchestra.addInstrument(liberatorMotor2);
         m_orchestra.loadMusic("output.chrp");
-        //m_orchestra.play();
+        // m_orchestra.play();
         coralToggle = false;
 
         Slot0Configs slot0 = cfg.Slot0;
@@ -150,8 +150,12 @@ public class LiberatorSubsystem extends SubsystemBase {
         return algaeMotor.getPosition().getValueAsDouble();
     }
 
-    public void manualAlgae(int num){
-        algaeMotor.set(0.5 * -num);
+    public void manualAlgaeUp(){
+        algaeMotor.set(0.17);
+    }
+
+    public void manualAlgaeDown(){
+        algaeMotor.set(-0.17);
     }
 
     public void setAlgae(double speed){

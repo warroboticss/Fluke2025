@@ -1,18 +1,19 @@
 package frc.robot.Commands;
 
+import java.util.function.Supplier;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.ElevatorSubsystem;
 import frc.robot.Subsystems.LiberatorSubsystem;
 
-public class ManualAlgaeCmd extends Command{
+public class ManualAlgaeUp extends Command{
 
-    private static boolean up;
     private static LiberatorSubsystem liberator;
 
 
-    public ManualAlgaeCmd(LiberatorSubsystem liberator, boolean up){
-        ManualAlgaeCmd.liberator = liberator;
-        ManualAlgaeCmd.up = up;
+    public ManualAlgaeUp(LiberatorSubsystem liberator){
+        ManualAlgaeUp.liberator = liberator;
+
 
         addRequirements(liberator);
     }
@@ -25,12 +26,7 @@ public class ManualAlgaeCmd extends Command{
 
     @Override
     public void execute() {
-        if(up){
-            liberator.manualAlgae(1);
-        }
-        else{
-            liberator.manualAlgae(-1);
-        }
+            liberator.manualAlgaeUp();
     }
 
     @Override

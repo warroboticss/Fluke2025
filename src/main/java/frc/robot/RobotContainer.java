@@ -25,8 +25,10 @@ import frc.robot.Commands.DefaultLiberatorCmd;
 import frc.robot.Commands.ElevatorCmd;
 import frc.robot.Commands.HomeElevatorCmd;
 import frc.robot.Commands.LiberateCommand;
-import frc.robot.Commands.ManualAlgaeCmd;
-import frc.robot.Commands.ManualElevatorCmd;
+import frc.robot.Commands.ManualAlgaeDown;
+import frc.robot.Commands.ManualAlgaeUp;
+import frc.robot.Commands.ManualElevatorDown;
+import frc.robot.Commands.ManualElevatorUp;
 import frc.robot.Commands.ManualLiberatorCmd;
 import frc.robot.Commands.RemoveAlgae;
 import frc.robot.Commands.ScoreCmd;
@@ -70,14 +72,14 @@ double area = ta.getDouble(0.0);
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
-    private final CommandXboxController controller = new CommandXboxController(0);
-    private final CommandXboxController manualController = new CommandXboxController(1);
+    // private final CommandXboxController controller = new CommandXboxController(1);
+    private final CommandXboxController manualController = new CommandXboxController(0);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-    private final Trigger a = controller.a();
-    private final Trigger b = controller.b();
-    private final Trigger x = controller.x();
-    private final Trigger y = controller.y();
+    // private final Trigger a = controller.a();
+    // private final Trigger b = controller.b();
+    // private final Trigger x = controller.x();
+    // private final Trigger y = controller.y();
 
     //private final SendableChooser<Command> autoChooser;
 
@@ -91,46 +93,35 @@ double area = ta.getDouble(0.0);
   }
 
   private void configureBindings() {
-     drivetrain.setDefaultCommand(
-            // Drivetrain will execute this command periodically
-            drivetrain.applyRequest(() ->
-                drive.withVelocityX(-1 * Math.abs(controller.getLeftY())* controller.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(-1 * Math.abs(controller.getLeftX())* controller.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(-controller.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
-            )
-        );
+    //  drivetrain.setDefaultCommand(
+    //         // Drivetrain will execute this command periodically
+    //         drivetrain.applyRequest(() ->
+    //             drive.withVelocityX(-1 * Math.abs(controller.getLeftY())* controller.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
+    //                 .withVelocityY(-1 * Math.abs(controller.getLeftX())* controller.getLeftX() * MaxSpeed) // Drive left with negative X (left)
+    //                 .withRotationalRate(-controller.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+    //         )
+    //     );
 
 
-        // reset the field-centric heading on left bumper press
-        controller.rightBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+    //     // reset the field-centric heading on left bumper press
+    //     controller.rightBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
-        //y.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 1, true));
 
-        a.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 1, controller.rightBumper().getAsBoolean()));
-        b.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 2, controller.rightBumper().getAsBoolean()));
-        x.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 3, false));
-        y.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 4, false));
+        // a.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 1, controller.rightBumper().getAsBoolean()));
+        // b.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 2, controller.rightBumper().getAsBoolean()));
+        // x.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 3, false));
+        // y.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 4, false));
 
 
         // manual controls
-        manualController.rightBumper().whileTrue(new ManualAlgaeCmd(liberatorSubsystem, true));
-        manualController.leftBumper().whileTrue(new ManualAlgaeCmd(liberatorSubsystem, false));
+        manualController.rightBumper().whileTrue(new ManualAlgaeUp(liberatorSubsystem));
+        manualController.leftBumper().whileTrue(new ManualAlgaeDown(liberatorSubsystem));
         manualController.a().whileTrue(new ManualLiberatorCmd(liberatorSubsystem, true));
         manualController.b().whileTrue(new ManualLiberatorCmd(liberatorSubsystem, false));
         manualController.y().onTrue(new InstantCommand(liberatorSubsystem::resetToggle));
-        manualController.rightTrigger().whileTrue(new ManualElevatorCmd(elevatorSubsystem, true));
-        manualController.leftTrigger().whileTrue(new ManualElevatorCmd(elevatorSubsystem, false));
+        manualController.rightTrigger().whileTrue(new ManualElevatorUp(elevatorSubsystem));
+        manualController.leftTrigger().whileTrue(new ManualElevatorDown(elevatorSubsystem));
 
-
-
-        //a.onTrue(liberatorSubsystem.runOnce(() -> liberatorSubsystem.test()));
-        //  a.onTrue(new ElevatorCmd(elevatorSubsystem, 3.4));
-        //y.onTrue(new HomeElevatorCmd(elevatorSubsystem));
-        //  controller.leftBumper().onTrue(new LiberateCommand(liberatorSubsystem, elevatorSubsystem));
-        //a.onTrue(new RemoveAlgae(liberatorSubsystem, elevatorSubsystem));
-        //a.onTrue(liberatorSubsystem.runOnce(() -> liberatorSubsystem.removeAlgae()));
-
-        //controller.leftBumper().onTrue(new RemoveAlgae(liberatorSubsystem, elevatorSubsystem));
 
         drivetrain.registerTelemetry(logger::telemeterize);
 

@@ -3,15 +3,13 @@ package frc.robot.Commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.ElevatorSubsystem;
 
-public class ManualElevatorCmd extends Command{
+public class ManualElevatorUp extends Command{
 
-    private static boolean up;
     private static ElevatorSubsystem elevator;
 
 
-    public ManualElevatorCmd(ElevatorSubsystem elevator, boolean up){
-        ManualElevatorCmd.elevator = elevator;
-        ManualElevatorCmd.up = up;
+    public ManualElevatorUp(ElevatorSubsystem elevator){
+        ManualElevatorUp.elevator = elevator;
 
         addRequirements(elevator);
     }
@@ -25,12 +23,7 @@ public class ManualElevatorCmd extends Command{
 
     @Override
     public void execute() {
-        if(up){
-            elevator.manual(1);
-        }
-        else{
-            elevator.manual(-1);
-        }
+        elevator.manual(1);
     }
 
     @Override
@@ -40,3 +33,4 @@ public class ManualElevatorCmd extends Command{
     }
     
 }
+
