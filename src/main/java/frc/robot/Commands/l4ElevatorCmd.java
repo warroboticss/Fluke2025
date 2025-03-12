@@ -9,18 +9,16 @@ import frc.robot.Constants;
 import frc.robot.Subsystems.ElevatorSubsystem;
 import frc.robot.Subsystems.LiberatorSubsystem;
 
-public class ElevatorCmd extends Command{
+public class l4ElevatorCmd extends Command{
 
     private static ElevatorSubsystem elevator;
-    private double setpoint;
     private Timer time = new Timer();
     private static LiberatorSubsystem liberator;
 
     // height: 1,2,3,4 for each level
-    public ElevatorCmd(ElevatorSubsystem elevator, double setpoint, LiberatorSubsystem liberator){
-        ElevatorCmd.elevator = elevator;
-        ElevatorCmd.liberator = liberator;
-        this.setpoint = setpoint;
+    public l4ElevatorCmd(ElevatorSubsystem elevator, LiberatorSubsystem liberator){
+        l4ElevatorCmd.elevator = elevator;
+        l4ElevatorCmd.liberator = liberator;
 
         addRequirements(elevator, liberator);
     }
@@ -38,12 +36,12 @@ public class ElevatorCmd extends Command{
     //    elevator.run((setpoint*Constants.INCHES_TO_ROTATIONS_ELEVATOR));
         //elevator.test();
         //System.out.println(elevator.getPosition() * Constants.INCHES_PER_ROTATION_ELEVATOR);
-        elevator.run((setpoint));
+        elevator.l4();
     }
 
     @Override
     public boolean isFinished(){
-        return time.get() > (setpoint + 1.5);    
+        return time.get() > 5;    
     }
 
     @Override

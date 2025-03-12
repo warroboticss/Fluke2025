@@ -8,6 +8,7 @@ import com.ctre.phoenix6.controls.MotionMagicDutyCycle;
 import com.ctre.phoenix6.controls.PositionDutyCycle;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.GravityTypeValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import au.grapplerobotics.LaserCan;
 import edu.wpi.first.wpilibj.Timer;
@@ -23,6 +24,7 @@ public class LiberatorSubsystem extends SubsystemBase {
     TalonFXConfiguration cfg = new TalonFXConfiguration();
     private static Timer time = new Timer();
     private boolean coralToggle;
+    private boolean libLock = false;
 
      //private final PIDController algaePID = new PIDController(0.1, 0, 0);
      private static MotionMagicDutyCycle algaePID = new MotionMagicDutyCycle(0);
@@ -35,7 +37,7 @@ public class LiberatorSubsystem extends SubsystemBase {
         m_orchestra.addInstrument(liberatorMotor1);
         m_orchestra.addInstrument(liberatorMotor2);
         m_orchestra.loadMusic("output.chrp");
-        m_orchestra.play();
+        //m_orchestra.play();
         coralToggle = false;
 
         Slot0Configs slot0 = cfg.Slot0;
@@ -53,9 +55,8 @@ public class LiberatorSubsystem extends SubsystemBase {
         motionMagicConfigs.MotionMagicAcceleration = 160; // Target acceleration of 160 rps/s (0.5 seconds)
         motionMagicConfigs.MotionMagicJerk = 1600; // Target jerk of 1600 rps/s/s (0.1 seconds)
 
+        algaeMotor.setNeutralMode(NeutralModeValue.Brake);
         algaeMotor.getConfigurator().apply(cfg);
-
-
         algaeMotor.setPosition(0);
     }
 
@@ -96,14 +97,22 @@ public class LiberatorSubsystem extends SubsystemBase {
         coralToggle = !coralToggle;
     }
 
+    public boolean getLibLock(){
+        return libLock;
+    }
+
+    public void setLibLock(boolean lock){
+        libLock = lock;
+    }
+
 
     public void state(){
-        //System.out.println(coralToggle);
+        if(!libLock){
         if(ifCoral()){
             if(time.get() == 0){
                 time.start();
             }
-            if(time.get() > 0.3){
+            if(time.get() > 0.25){
                 coralToggle = true;
             }
         }
@@ -120,12 +129,17 @@ public class LiberatorSubsystem extends SubsystemBase {
             }
         }
     }
+    }
 
 
     // ALGAE REMOVAL
     public void removeAlgae(){
        //algaeMotor.set(algaePID.calculate(getAlgaePosition(), -42.66));
-       algaeMotor.setControl(algaePID.withPosition(42.66));
+       algaeMotor.setControl(algaePID.withPosition(-42.66));
+    }
+
+    public void slightAlgae(){
+        algaeMotor.setControl(algaePID.withPosition(-33));
     }
 
     public void resetAlgae(){
@@ -134,6 +148,14 @@ public class LiberatorSubsystem extends SubsystemBase {
 
     public double getAlgaePosition(){
         return algaeMotor.getPosition().getValueAsDouble();
+    }
+
+    public void manualAlgae(int num){
+        algaeMotor.set(0.5 * -num);
+    }
+
+    public void setAlgae(double speed){
+        algaeMotor.set(speed);
     }
 
     // public boolean algaeAtPosition(){

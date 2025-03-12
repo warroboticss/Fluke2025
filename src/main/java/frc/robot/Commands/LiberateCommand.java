@@ -20,18 +20,34 @@ public class LiberateCommand extends Command{
     }
 
     public void initialize(){
-        elevator.setLock(true);
-        time.start();
+        liberator.stop();
+        
         //slow drive
     }
 
     @Override
     public void execute(){
-        liberator.liberate();
+        if(!liberator.getLibLock()){
+            liberator.liberate();
+            time.start();
+        }
+        
     }
 
     public boolean isFinished(){
-        return time.get() >= 3;
+        return time.get() >= 1.5;
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        time.stop();
+        time.reset();
+        liberator.stop();
+        elevator.setLock(false);
+        elevator.home();
+        liberator.setCoralToggle(false);
+        liberator.setLibLock(false);
+        System.out.println("RAN");
     }
 
     public void end(){
@@ -41,5 +57,7 @@ public class LiberateCommand extends Command{
         elevator.setLock(false);
         elevator.home();
         liberator.setCoralToggle(false);
+        liberator.setLibLock(false);
+        System.out.println("RAN");
     }
 }

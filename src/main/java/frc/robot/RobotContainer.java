@@ -16,12 +16,18 @@ import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.Commands.DefaultElevatorCmd;
+import frc.robot.Commands.DefaultLiberatorCmd;
 import frc.robot.Commands.ElevatorCmd;
 import frc.robot.Commands.HomeElevatorCmd;
 import frc.robot.Commands.LiberateCommand;
+import frc.robot.Commands.ManualAlgaeCmd;
+import frc.robot.Commands.ManualElevatorCmd;
+import frc.robot.Commands.ManualLiberatorCmd;
 import frc.robot.Commands.RemoveAlgae;
 import frc.robot.Commands.ScoreCmd;
 import frc.robot.Subsystems.CommandSwerveDrivetrain;
@@ -53,7 +59,7 @@ double area = ta.getDouble(0.0);
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
 
   private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
-    private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
+    private double MaxAngularRate = RotationsPerSecond.of(1).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
@@ -65,6 +71,7 @@ double area = ta.getDouble(0.0);
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
     private final CommandXboxController controller = new CommandXboxController(0);
+    private final CommandXboxController manualController = new CommandXboxController(1);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     private final Trigger a = controller.a();
@@ -77,8 +84,8 @@ double area = ta.getDouble(0.0);
   public RobotContainer() {
     //autoChooser = AutoBuilder.buildAutoChooser("Test");
     
-    liberatorSubsystem.setDefaultCommand(liberatorSubsystem.run(() -> liberatorSubsystem.state()));
-    //elevatorSubsystem.setDefaultCommand(elevatorSubsystem.run(() -> elevatorSubsystem.home()));
+    liberatorSubsystem.setDefaultCommand(new DefaultLiberatorCmd(liberatorSubsystem));
+    elevatorSubsystem.setDefaultCommand(new DefaultElevatorCmd(elevatorSubsystem));
     configureBindings();
 
   }
@@ -93,34 +100,33 @@ double area = ta.getDouble(0.0);
             )
         );
 
-        // BRAKE
-        //controller.button(8).whileTrue(drivetrain.applyRequest(() -> brake));
-        // SMTH ELSE THAT ALSO WORKS LIKE A BRAKE BUT EXTREMELY WEIRD
-        // controller.b().whileTrue(drivetrain.applyRequest(() ->
-        //     point.withModuleDirection(new Rotation2d(-controller.getLeftY(), -controller.getLeftX()))
-        // ));
-
-        // Run SysId routines when holding back/start and X/Y.
-        // Note that each routine should be run exactly once in a single log.
-        // REVERSING?
-        // controller.back().and(controller.y()).whileTrue(drivetrain.sysIdDynamic(Direction.kForward));
-        // controller.back().and(controller.x()).whileTrue(drivetrain.sysIdDynamic(Direction.kReverse));
-        // controller.start().and(controller.y()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kForward));
-        // controller.start().and(controller.x()).whileTrue(drivetrain.sysIdQuasistatic(Direction.kReverse));
 
         // reset the field-centric heading on left bumper press
         controller.rightBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
-        //a.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 1, controller.rightBumper().getAsBoolean()));
-        // b.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 2, controller.rightBumper().getAsBoolean()));
-        // x.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 3, false));
-        // y.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 4, false));
+        //y.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 1, true));
+
+        a.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 1, controller.rightBumper().getAsBoolean()));
+        b.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 2, controller.rightBumper().getAsBoolean()));
+        x.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 3, false));
+        y.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 4, false));
+
+
+        // manual controls
+        manualController.rightBumper().whileTrue(new ManualAlgaeCmd(liberatorSubsystem, true));
+        manualController.leftBumper().whileTrue(new ManualAlgaeCmd(liberatorSubsystem, false));
+        manualController.a().whileTrue(new ManualLiberatorCmd(liberatorSubsystem, true));
+        manualController.b().whileTrue(new ManualLiberatorCmd(liberatorSubsystem, false));
+        manualController.y().onTrue(new InstantCommand(liberatorSubsystem::resetToggle));
+        manualController.rightTrigger().whileTrue(new ManualElevatorCmd(elevatorSubsystem, true));
+        manualController.leftTrigger().whileTrue(new ManualElevatorCmd(elevatorSubsystem, false));
+
 
 
         //a.onTrue(liberatorSubsystem.runOnce(() -> liberatorSubsystem.test()));
-         a.onTrue(new ElevatorCmd(elevatorSubsystem, 2));
-         b.onTrue(new HomeElevatorCmd(elevatorSubsystem));
-         controller.leftBumper().onTrue(new LiberateCommand(liberatorSubsystem, elevatorSubsystem));
+        //  a.onTrue(new ElevatorCmd(elevatorSubsystem, 3.4));
+        //y.onTrue(new HomeElevatorCmd(elevatorSubsystem));
+        //  controller.leftBumper().onTrue(new LiberateCommand(liberatorSubsystem, elevatorSubsystem));
         //a.onTrue(new RemoveAlgae(liberatorSubsystem, elevatorSubsystem));
         //a.onTrue(liberatorSubsystem.runOnce(() -> liberatorSubsystem.removeAlgae()));
 

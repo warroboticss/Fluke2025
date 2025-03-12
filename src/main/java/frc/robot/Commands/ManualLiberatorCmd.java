@@ -8,9 +8,9 @@ import frc.robot.Subsystems.LiberatorSubsystem;
 public class ManualLiberatorCmd extends Command {
 
     private static LiberatorSubsystem liberator;
-    private static Supplier<Boolean> move;
+    private static boolean move;
 
-    public ManualLiberatorCmd(LiberatorSubsystem liberator, Supplier<Boolean> move){
+    public ManualLiberatorCmd(LiberatorSubsystem liberator, boolean move){
         ManualLiberatorCmd.liberator = liberator;
         ManualLiberatorCmd.move = move;
 
@@ -20,8 +20,11 @@ public class ManualLiberatorCmd extends Command {
     @Override
     public void execute() {
         // TODO Auto-generated method stub
-        if(move.get()){
+        if(move){
             liberator.intake();
+        }
+        else{
+            liberator.stop();
         }
     }
 }

@@ -5,15 +5,15 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.ElevatorSubsystem;
 import frc.robot.Subsystems.LiberatorSubsystem;
 
-public class RemoveAlgae extends Command{
+public class SlightlyAlgaeCmd extends Command{
 
     public static LiberatorSubsystem liberator;
     private static ElevatorSubsystem elevator;
     private static Timer time = new Timer();
     
-    public RemoveAlgae(LiberatorSubsystem liberator, ElevatorSubsystem elevator){
-        RemoveAlgae.liberator = liberator;
-        RemoveAlgae.elevator = elevator;
+    public SlightlyAlgaeCmd(LiberatorSubsystem liberator, ElevatorSubsystem elevator){
+        SlightlyAlgaeCmd.liberator = liberator;
+        SlightlyAlgaeCmd.elevator = elevator;
 
         System.out.println("RAN");
 
@@ -22,20 +22,18 @@ public class RemoveAlgae extends Command{
 
     public void initialize(){
         elevator.setLock(true);
+        time.start();
         //slow drive
     }
 
     @Override
     public void execute(){
         System.out.println("RAN");
-        liberator.removeAlgae();
-        if(liberator.getAlgaePosition() >= 42.66){
-            time.start();
-        }
+        liberator.slightAlgae();
     }
 
     public boolean isFinished(){
-        return time.get() >= 2;
+        return (liberator.getAlgaePosition() <= -30) || time.get() > 1;
     }
 
     @Override
@@ -43,17 +41,11 @@ public class RemoveAlgae extends Command{
         // TODO Auto-generated method stub
         time.stop();
         time.reset();
-        liberator.resetAlgae();
-        elevator.setLock(false);
-        elevator.home();
     }
 
     public void end(){
         time.stop();
         time.reset();
-        liberator.resetAlgae();
-        elevator.setLock(false);
-        elevator.home();
     }
     
 }

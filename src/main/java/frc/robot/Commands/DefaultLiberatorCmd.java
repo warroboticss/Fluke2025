@@ -8,20 +8,14 @@ import frc.robot.Subsystems.LiberatorSubsystem;
 
 public class DefaultLiberatorCmd extends Command{
     private static LiberatorSubsystem liberator;
-    private Supplier<Boolean> intaking;
-
-    public DefaultLiberatorCmd(LiberatorSubsystem liberator, Supplier<Boolean> intaking){
+    public DefaultLiberatorCmd(LiberatorSubsystem liberator){
         DefaultLiberatorCmd.liberator = liberator;
-        this.intaking = intaking;
+
+        addRequirements(liberator);
     }
 
     public void execute(){
-        // if(intaking.get()){
-        //     liberator.intake();
-        // }
-        // else {
-        //     liberator.state();
-        // }
+        liberator.state();
     }
     
 }

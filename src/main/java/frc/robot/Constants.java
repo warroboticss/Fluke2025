@@ -9,10 +9,11 @@ public class Constants {
    public static double INCHES_TO_METERS = 0.0254;
 
    // agae 1, algae 2, l1, l2, l3, l4
-   public static double[] ELEVATOR_HEIGHTS = {0, 7.5, 0, 3.65, 11.5, 24.75};
+   public static double[] ELEVATOR_HEIGHTS = {0.2, 1, 0, 0.9, 2.2, 5};
 
-   // l3: 4?
    // l4: 7.65
+   // l2: 2
+   // l2: 
 
     
 }
