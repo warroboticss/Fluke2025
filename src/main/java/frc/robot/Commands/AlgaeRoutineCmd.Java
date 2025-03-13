@@ -7,9 +7,9 @@ import frc.robot.Constants;
 import frc.robot.Subsystems.ElevatorSubsystem;
 import frc.robot.Subsystems.LiberatorSubsystem;
 
-public class ScoreCmd extends SequentialCommandGroup{
+public class AlgaeRoutineCmd extends SequentialCommandGroup{
 
-    public ScoreCmd(ElevatorSubsystem elevator, LiberatorSubsystem liberator, int height){
+    public AlgaeRoutineCmd(ElevatorSubsystem elevator, LiberatorSubsystem liberator, int height){
         addCommands(
             new SlightlyAlgaeCmd(liberator, elevator),
             new ElevatorCmd(elevator, Constants.ELEVATOR_HEIGHTS[height-1], liberator),

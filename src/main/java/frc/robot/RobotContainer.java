@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
+import frc.robot.Commands.AlgaeRoutineCmd;
 import frc.robot.Commands.DefaultElevatorCmd;
 import frc.robot.Commands.DefaultLiberatorCmd;
 import frc.robot.Commands.ElevatorCmd;
@@ -32,7 +33,6 @@ import frc.robot.Commands.ManualElevatorUp;
 import frc.robot.Commands.ManualLiberatorCmd;
 import frc.robot.Commands.RemoveAlgae;
 import frc.robot.Commands.ScoreCmd;
-import frc.robot.Commands.AlgaeRoutineCmd;
 import frc.robot.Subsystems.CommandSwerveDrivetrain;
 import frc.robot.Subsystems.ElevatorSubsystem;
 import frc.robot.Subsystems.LiberatorSubsystem;
@@ -108,8 +108,8 @@ double area = ta.getDouble(0.0);
         controller.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
 
-        controller.rightTrigger().onTrue(new AlgaeRoutineCmd(elevatorSubsystem, liberatorSubsystem));
-        controller.leftTrigger().onTrue(new AlgaeRoutineCmd(elevatorSubsystem, liberatorSubsystem));
+        controller.rightTrigger().onTrue(new AlgaeRoutineCmd(elevatorSubsystem, liberatorSubsystem, 2));
+        controller.leftTrigger().onTrue(new AlgaeRoutineCmd(elevatorSubsystem, liberatorSubsystem, 1));
         a.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 1));
         b.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 2));
         x.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 3));
