@@ -32,6 +32,7 @@ import frc.robot.Commands.ManualElevatorUp;
 import frc.robot.Commands.ManualLiberatorCmd;
 import frc.robot.Commands.RemoveAlgae;
 import frc.robot.Commands.ScoreCmd;
+import frc.robot.Commands.AlgaeRoutineCmd;
 import frc.robot.Subsystems.CommandSwerveDrivetrain;
 import frc.robot.Subsystems.ElevatorSubsystem;
 import frc.robot.Subsystems.LiberatorSubsystem;
@@ -107,10 +108,12 @@ double area = ta.getDouble(0.0);
         controller.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
 
-        a.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 1, controller.rightBumper().getAsBoolean()));
-        b.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 2, controller.rightBumper().getAsBoolean()));
-        x.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 3, false));
-        y.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 4, false));
+        controller.rightTrigger().onTrue(new AlgaeRoutineCmd(elevatorSubsystem, liberatorSubsystem));
+        controller.leftTrigger().onTrue(new AlgaeRoutineCmd(elevatorSubsystem, liberatorSubsystem));
+        a.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 1));
+        b.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 2));
+        x.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 3));
+        y.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 4));
 
 
         // manual controls
