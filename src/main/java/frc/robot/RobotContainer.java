@@ -108,8 +108,8 @@ double area = ta.getDouble(0.0);
         controller.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
 
-        controller.rightTrigger().onTrue(new AlgaeRoutineCmd(elevatorSubsystem, liberatorSubsystem, 2));
-        controller.leftTrigger().onTrue(new AlgaeRoutineCmd(elevatorSubsystem, liberatorSubsystem, 1));
+        // controller.rightTrigger().onTrue(new AlgaeRoutineCmd(elevatorSubsystem, liberatorSubsystem, 2));
+        // controller.leftTrigger().onTrue(new AlgaeRoutineCmd(elevatorSubsystem, liberatorSubsystem, 1));
         a.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 1));
         b.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 2));
         x.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 3));
