@@ -23,7 +23,7 @@ public class LiberatorSubsystem extends SubsystemBase {
     // PositionDutyCycle pid = new PositionDutyCycle(0);
     TalonFXConfiguration cfg = new TalonFXConfiguration();
     private static Timer time = new Timer();
-    private boolean coralToggle;
+    private boolean coralToggle = true;
     private boolean libLock = false;
 
      //private final PIDController algaePID = new PIDController(0.1, 0, 0);
@@ -58,6 +58,7 @@ public class LiberatorSubsystem extends SubsystemBase {
         algaeMotor.setNeutralMode(NeutralModeValue.Brake);
         algaeMotor.getConfigurator().apply(cfg);
         algaeMotor.setPosition(0);
+        coralToggle = true;
     }
 
 
@@ -82,7 +83,7 @@ public class LiberatorSubsystem extends SubsystemBase {
     }
 
     public void intake(){
-        liberatorMotor1.set(0.075);
+        liberatorMotor1.set(0.05);
     }
 
     public boolean ifCoral(){
@@ -94,7 +95,9 @@ public class LiberatorSubsystem extends SubsystemBase {
     }
 
     public void resetToggle(){
-        coralToggle = !coralToggle;
+        coralToggle = false;
+        time.stop();
+        time.reset();
     }
 
     public boolean getLibLock(){

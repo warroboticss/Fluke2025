@@ -18,11 +18,14 @@ public class Robot extends TimedRobot {
 
   private RobotContainer m_robotContainer;
 
+  public Robot(){
+  CanBridge.runTCP();
+
+  }
   @Override
   public void robotInit() {
     m_robotContainer = new RobotContainer();
      FollowPathCommand.warmupCommand().schedule();
-      CanBridge.runTCP();
   }
 
   @Override

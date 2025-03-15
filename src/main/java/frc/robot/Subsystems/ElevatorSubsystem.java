@@ -23,9 +23,9 @@ import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.Timer;
 
 public class ElevatorSubsystem extends SubsystemBase{
-    private static TalonFX elevatorMotorLeft = new TalonFX(17, "Vegetarian-ivore");
+    private static TalonFX elevatorMotorLeft = new TalonFX(17, "rio");
     private static TalonFXConfigurator elevatorMotorLeftC = elevatorMotorLeft.getConfigurator();
-    private static TalonFX elevatorMotorRight = new TalonFX(18,"Vegetarian-ivore");
+    private static TalonFX elevatorMotorRight = new TalonFX(18,"rio");
     private static TalonFXConfigurator elevatorMotorRightC = elevatorMotorRight.getConfigurator();
     
 
@@ -47,7 +47,7 @@ public class ElevatorSubsystem extends SubsystemBase{
     //private static PositionDutyCycle control = new PositionDutyCycle(0).withSlot(0);
 
     //private final PIDController elevatorPID = new PIDController(0.003, 0, 0);
-    private final PIDController elevatorPID = new PIDController(0.06, 0.0, 0.0);
+    private final PIDController elevatorPID = new PIDController(0.08, 0.0, 0.0);
     private final MotionMagicDutyCycle motionPID = new MotionMagicDutyCycle(0);
     private static boolean lock = false;
     DigitalInput home = new DigitalInput(0);
@@ -90,7 +90,7 @@ public class ElevatorSubsystem extends SubsystemBase{
     }
 
     public void l4(){
-        elevatorMotorLeft.set(elevatorPID.calculate(getPosition()*Constants.INCHES_PER_ROTATION_ELEVATOR, 6.4));
+        elevatorMotorLeft.set(elevatorPID.calculate(getPosition()*Constants.INCHES_PER_ROTATION_ELEVATOR, 7.7));
     }
 
     public void manual(int number){
@@ -108,7 +108,7 @@ public class ElevatorSubsystem extends SubsystemBase{
         //if(!lock){
         //System.out.println(home.get());
             while(!home.get()){
-                elevatorMotorLeft.set(-0.1);
+                elevatorMotorLeft.set(-0.25);
             }
             elevatorMotorLeft.set(0);
             elevatorMotorLeft.setPosition(0);

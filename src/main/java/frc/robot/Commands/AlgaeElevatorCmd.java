@@ -9,7 +9,7 @@ import frc.robot.Constants;
 import frc.robot.Subsystems.ElevatorSubsystem;
 import frc.robot.Subsystems.LiberatorSubsystem;
 
-public class ElevatorCmd extends Command{
+public class AlgaeElevatorCmd extends Command{
 
     private static ElevatorSubsystem elevator;
     private double setpoint;
@@ -17,9 +17,9 @@ public class ElevatorCmd extends Command{
     private static LiberatorSubsystem liberator;
 
     // height: 1,2,3,4 for each level
-    public ElevatorCmd(ElevatorSubsystem elevator, double setpoint, LiberatorSubsystem liberator){
-        ElevatorCmd.elevator = elevator;
-        ElevatorCmd.liberator = liberator;
+    public AlgaeElevatorCmd(ElevatorSubsystem elevator, double setpoint, LiberatorSubsystem liberator){
+        AlgaeElevatorCmd.elevator = elevator;
+        AlgaeElevatorCmd.liberator = liberator;
         this.setpoint = setpoint;
 
         addRequirements(elevator, liberator);
@@ -43,7 +43,7 @@ public class ElevatorCmd extends Command{
 
     @Override
     public boolean isFinished(){
-        return time.get() > (setpoint + 0.75);    
+        return time.get() > (5);    
     }
 
     @Override
@@ -63,3 +63,4 @@ public class ElevatorCmd extends Command{
 
     
 }
+
