@@ -1,0 +1,41 @@
+package frc.robot.Subsystems.vision;
+
+import limelight.LimelightHelpers;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+public class LimelightSubsystem extends SubsystemBase{
+    private double robotX = 0.0;
+    private double robotY = 0.0;
+    private double robotHeading = 0.0;
+
+    public LimelightSubsystem() {
+        // Constructor, no initialization required here
+    }
+
+    public void updatePose() {
+        // Retrieve the bot pose from MegaTag2 in WPIBlue coordinates
+        double[] botPose = LimelightHelpers.getBotPose_wpiBlue("limelight");
+
+        // Validate data and update robot's pose
+        if (botPose != null && botPose.length >= 6) {
+            robotX = botPose[0]; // X-coordinate in meters
+            robotY = botPose[1]; // Y-coordinate in meters
+            robotHeading = botPose[5]; // Yaw (heading) in degrees
+        } else {
+            System.out.println("No valid pose data from Limelight.");
+        }
+    }
+
+    // Getters to access coordinates and heading
+    public double getRobotX() {
+        return robotX;
+    }
+
+    public double getRobotY() {
+        return robotY;
+    }
+
+    public double getRobotHeading() {
+        return robotHeading;
+    }
+}

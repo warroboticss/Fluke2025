@@ -1,0 +1,23 @@
+package frc.robot.Commands;
+
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Subsystems.vision.LimelightSubsystem;
+
+public class WPIBlueCoordinatesCmd extends CommandBase {
+    private final LimelightSubsystem limelightSubsystem;
+
+    public UpdateCoordinatesCommand(LimelightSubsystem limelightSubsystem) {
+        this.limelightSubsystem = limelightSubsystem;
+        addRequirements(limelightSubsystem);
+    }
+
+    @Override
+    public void execute() {
+        limelightSubsystem.updatePose();
+    }
+
+    @Override
+    public boolean isFinished() {
+        return false; // Command runs continuously
+    }
+}

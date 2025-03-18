@@ -53,6 +53,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 
 
 
+
 public class RobotContainer {
 
 NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
@@ -151,9 +152,5 @@ double area = ta.getDouble(0.0);
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
-  }
-
-  public Command getAutonomousCommand() {
-    return new PathPlannerAuto("Forward");
   }
 }

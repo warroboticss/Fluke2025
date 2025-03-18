@@ -15,25 +15,27 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.CommandSwerveDrivetrain;
-import frc.robot.Subsystems.Limelight;
+// import frc.robot.Subsystems.Limelight;
 
 public class PathGenerationCmd extends Command {
     private static CommandSwerveDrivetrain swerve;
-    private final Supplier<Double> x;
-    private final Supplier<Double> y;
+    //private final Supplier<Double> x;
+    //private final Supplier<Double> y;
     private Pose2d endPose;
 
-    public PathGenerationCmd(CommandSwerveDrivetrain swerve, Supplier<Double> x, Supplier<Double> y, Limelight lime){
-        PathGenerationCmd.swerve = swerve;
-        this.x = x;
-        this.y = y;
-    }
+    // ** public PathGenerationCmd(CommandSwerveDrivetrain swerve, Supplier<Double> x, Supplier<Double> y, Limelight lime){
+        //PathGenerationCmd.swerve = swerve;
+        //this.x = x;
+        //this.y = y;
+    //}
+
+    // commented some stuffs out for the time being
     
     public void execute(){
         Pose2d currentPose = swerve.getState().Pose;
 
         Pose2d startPose = new Pose2d(currentPose.getTranslation(), new Rotation2d());
-        endPose = new Pose2d(currentPose.getTranslation().plus(new Translation2d(x.get(),y.get())), new Rotation2d());
+        // endPose = new Pose2d(currentPose.getTranslation().plus(new Translation2d(x.get(),y.get())), new Rotation2d());
 
         List<Waypoint> waypoints = PathPlannerPath.waypointsFromPoses(startPose, endPose);
         PathPlannerPath path = new PathPlannerPath(
