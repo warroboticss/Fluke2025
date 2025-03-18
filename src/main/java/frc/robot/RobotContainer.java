@@ -13,7 +13,6 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -40,10 +39,12 @@ import frc.robot.Commands.RemoveAlgae;
 import frc.robot.Commands.ScoreCmd;
 import frc.robot.Commands.l4ElevatorCmd;
 import frc.robot.Commands.IndexCmd;
+import frc.robot.Commands.UpdateCoordinatesCommand;
 import frc.robot.Subsystems.CommandSwerveDrivetrain;
 import frc.robot.Subsystems.ElevatorSubsystem;
 import frc.robot.Subsystems.LiberatorSubsystem;
 import frc.robot.Subsystems.CoralIndexer;
+import frc.robot.Subsystems.vision.LimelightSubsystem;
 import frc.robot.generated.TunerConstants;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -70,6 +71,7 @@ double area = ta.getDouble(0.0);
   private final LiberatorSubsystem liberatorSubsystem = new LiberatorSubsystem();
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
   private final CoralIndexer coralIndexer = new CoralIndexer();
+  private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
 
   public static double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     public static double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
@@ -101,6 +103,7 @@ double area = ta.getDouble(0.0);
 
     NamedCommands.registerCommand("l4", new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 4));
     coralIndexer.setDefaultCommand(new IndexCmd(coralIndexer));
+    limelightSubsystem.setDefaultCommand(new UpdateCoordinatesCommand(limelightSubsystem));
     //liberatorSubsystem.setDefaultCommand(new DefaultLiberatorCmd(liberatorSubsystem));
     //elevatorSubsystem.setDefaultCommand(new DefaultElevatorCmd(elevatorSubsystem));
     //liberatorSubsystem.setDefaultCommand(new LiberateStop(liberatorSubsystem));

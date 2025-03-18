@@ -3,19 +3,20 @@ package frc.robot.Commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Subsystems.CoralIndexer;
 
- public class IndexCmd extends Command{
+public class IndexCmd extends Command{
     private final CoralIndexer index;
 
-    public IndexCmd(CoralIndexer index){
+    public IndexCmd(CoralIndexer index) {
         this.index = index;
 
-        addRequirements(CoralIndexer);
+        // Set CoralIndexer as a required subsystem
+        addRequirements(index);
     }
 
     @Override
     public void execute() {
         // Continuously run the indexer motor
-        CoralIndexer.index();
+        index.index();
     }
 
     @Override
@@ -23,5 +24,4 @@ import frc.robot.Subsystems.CoralIndexer;
         // Command never ends
         return false;
     }
-
- }
+}
