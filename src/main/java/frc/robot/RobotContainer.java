@@ -45,6 +45,7 @@ import frc.robot.Subsystems.ElevatorSubsystem;
 import frc.robot.Subsystems.LiberatorSubsystem;
 import frc.robot.Subsystems.CoralIndexer;
 import frc.robot.Subsystems.vision.LimelightSubsystem;
+import frc.robot.Subsystems.vision.LimelightHelpers;
 import frc.robot.generated.TunerConstants;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -56,18 +57,7 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 
 
 public class RobotContainer {
-
-NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
-NetworkTableEntry tx = table.getEntry("tx");
-NetworkTableEntry ty = table.getEntry("ty");
-NetworkTableEntry ta = table.getEntry("ta");
-
-//read values periodically
-double xLime = tx.getDouble(0.0);
-double yLime = ty.getDouble(0.0);
-double area = ta.getDouble(0.0);
-
-
+  
   private final LiberatorSubsystem liberatorSubsystem = new LiberatorSubsystem();
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
   private final CoralIndexer coralIndexer = new CoralIndexer();
