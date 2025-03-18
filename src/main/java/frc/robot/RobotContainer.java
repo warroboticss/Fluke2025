@@ -21,27 +21,29 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.Commands.AlgaeElevatorCmd;
-import frc.robot.Commands.AlgaeRoutineCmd;
+// import frc.robot.Commands.AlgaeElevatorCmd;
+// import frc.robot.Commands.AlgaeRoutineCmd;
 import frc.robot.Commands.DefaultElevatorCmd;
 import frc.robot.Commands.DefaultLiberatorCmd;
 import frc.robot.Commands.ElevatorCmd;
 import frc.robot.Commands.HomeElevatorCmd;
 import frc.robot.Commands.LiberateCommand;
-import frc.robot.Commands.LiberateStop;
+// import frc.robot.Commands.LiberateStop;
 import frc.robot.Commands.ManualAlgaeDown;
 import frc.robot.Commands.ManualAlgaeUp;
 import frc.robot.Commands.ManualElevatorDown;
 import frc.robot.Commands.ManualElevatorUp;
-import frc.robot.Commands.ManualLiberate;
+// import frc.robot.Commands.ManualLiberate;
 import frc.robot.Commands.ManualLiberatorCmd;
 import frc.robot.Commands.RemoveAlgae;
-import frc.robot.Commands.RobotOriented;
+// import frc.robot.Commands.RobotOriented;
 import frc.robot.Commands.ScoreCmd;
 import frc.robot.Commands.l4ElevatorCmd;
+import frc.robot.Commands.IndexCmd;
 import frc.robot.Subsystems.CommandSwerveDrivetrain;
 import frc.robot.Subsystems.ElevatorSubsystem;
 import frc.robot.Subsystems.LiberatorSubsystem;
+import frc.robot.Subsystems.CoralIndexer;
 import frc.robot.generated.TunerConstants;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -66,6 +68,7 @@ double area = ta.getDouble(0.0);
 
   private final LiberatorSubsystem liberatorSubsystem = new LiberatorSubsystem();
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
+  private final CoralIndexer coralIndexer = new CoralIndexer();
 
   public static double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     public static double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
@@ -96,9 +99,9 @@ double area = ta.getDouble(0.0);
     //autoChooser = AutoBuilder.buildAutoChooser("Test");
 
     NamedCommands.registerCommand("l4", new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 4));
-    
-    liberatorSubsystem.setDefaultCommand(new DefaultLiberatorCmd(liberatorSubsystem));
-    elevatorSubsystem.setDefaultCommand(new DefaultElevatorCmd(elevatorSubsystem));
+    coralIndexer.setDefaultCommand(new IndexCmd(coralIndexer));
+    //liberatorSubsystem.setDefaultCommand(new DefaultLiberatorCmd(liberatorSubsystem));
+    //elevatorSubsystem.setDefaultCommand(new DefaultElevatorCmd(elevatorSubsystem));
     //liberatorSubsystem.setDefaultCommand(new LiberateStop(liberatorSubsystem));
     configureBindings();
 
@@ -123,19 +126,19 @@ double area = ta.getDouble(0.0);
         // controller.rightTrigger().onTrue(new AlgaeRoutineCmd(elevatorSubsystem, liberatorSubsystem, 2));
         // controller.leftTrigger().onTrue(new AlgaeRoutineCmd(elevatorSubsystem, liberatorSubsystem, 1));
        // a.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 1));
-        b.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 2));
-        x.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 3));
-        y.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 4));
-        controller.rightBumper().onTrue(new InstantCommand(liberatorSubsystem::resetToggle));
+        // b.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 2));
+        // x.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 3));
+        // y.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 4));
+        // controller.rightBumper().onTrue(new InstantCommand(liberatorSubsystem::resetToggle));
         //controller.rightBumper().whileTrue(new RobotOriented(drivetrain, () -> controller.getLeftX(), () -> controller.getRightX(), () -> controller.getLeftY()));
-        controller.rightBumper().onTrue(new InstantCommand(() -> drivetrain.setLastRotation(drivetrain.getOperatorForwardDirection())));
+        // controller.rightBumper().onTrue(new InstantCommand(() -> drivetrain.setLastRotation(drivetrain.getOperatorForwardDirection())));
 
 
         // manual controls
         manualController.rightBumper().whileTrue(new ManualAlgaeUp(liberatorSubsystem));
         manualController.leftBumper().whileTrue(new ManualAlgaeDown(liberatorSubsystem));
-        manualController.x().whileTrue(new ManualLiberate(liberatorSubsystem));
-        manualController.b().whileTrue(new LiberateStop(liberatorSubsystem));
+        // manualController.x().whileTrue(new ManualLiberate(liberatorSubsystem));
+        // manualController.b().whileTrue(new LiberateStop(liberatorSubsystem));
 
         // //manualController.a().onTrue(new AlgaeElevatorCmd(elevatorSubsystem, 0.1, liberatorSubsystem));
         //manualController.y().onTrue(new AlgaeElevatorCmd(elevatorSubsystem, 1.5, liberatorSubsystem));
