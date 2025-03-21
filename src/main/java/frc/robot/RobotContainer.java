@@ -73,15 +73,17 @@ public class RobotContainer {
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
-    private final LimelightCmd limelightCmd = new LimelightCmd(drive); // Pass the existing SwerveRequest
+    private final SwerveRequest.FieldCentric swerveRequest = new SwerveRequest.FieldCentric();
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
     //CHANGE
-    private final CommandXboxController controller = new CommandXboxController(0);
-    private final CommandXboxController manualController = new CommandXboxController(1);
+    private final CommandXboxController controller = new CommandXboxController(1);
+    private final CommandXboxController manualController = new CommandXboxController(0);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
+    private final LimelightCmd limelightCmd = new LimelightCmd(drivetrain);
+
     private final Trigger a = controller.a();
     private final Trigger b = controller.b();
     private final Trigger x = controller.x();
@@ -134,7 +136,10 @@ public class RobotContainer {
         // manualController.x().whileTrue(new ManualLiberate(liberatorSubsystem));
         // manualController.b().whileTrue(new LiberateStop(liberatorSubsystem));
 
-        manualController.a().whileTrue(new LimelightCmd(drive));
+        manualController.a().whileTrue(new LimelightCmd(drivetrain));
+        manualController.a().whileTrue(Commands.run(() -> {
+          System.out.println("A button pressed!");
+      }));
 
         //manualController.y().onTrue(new AlgaeElevatorCmd(elevatorSubsystem, 1.5, liberatorSubsystem));
 

@@ -22,9 +22,9 @@ public class LimelightSubsystem extends SubsystemBase {
             robotY = botPose[1]; // Y-coordinate in meters
             robotHeading = botPose[5]; // Heading (yaw) in degrees
 
-            System.out.println("robotX: " +  robotX);
-            System.out.println("robotY: " +  robotY);
-            System.out.println("robotHeading: " +  robotHeading);
+            //System.out.println("robotX: " +  robotX);
+            //System.out.println("robotY: " +  robotY);
+            //System.out.println("robotHeading: " +  robotHeading);
         } else {
             System.out.println("No valid pose data from Limelight.");
         }
