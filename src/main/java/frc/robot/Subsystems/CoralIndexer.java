@@ -5,14 +5,14 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class CoralIndexer extends SubsystemBase {
-    private final TalonFX IndexMotor = new TalonFX(20, "rio"); // Replace 00 with the actual CAN ID
+    private final TalonFX IndexMotor = new TalonFX(20, "rio"); // CAN ID
 
     public CoralIndexer() {
         // constructor
     }
 
     public void index() {
-        IndexMotor.setControl(new DutyCycleOut(0.1)); // Set motor to run at 20% power
+        IndexMotor.setControl(new DutyCycleOut(0.1)); // Set motor to run
     }
 }
 

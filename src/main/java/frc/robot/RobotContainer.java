@@ -40,6 +40,7 @@ import frc.robot.Commands.ScoreCmd;
 import frc.robot.Commands.l4ElevatorCmd;
 import frc.robot.Commands.IndexCmd;
 import frc.robot.Commands.UpdateCoordinatesCommand;
+import frc.robot.Commands.LimelightCmd;
 import frc.robot.Subsystems.CommandSwerveDrivetrain;
 import frc.robot.Subsystems.ElevatorSubsystem;
 import frc.robot.Subsystems.LiberatorSubsystem;
@@ -72,13 +73,13 @@ public class RobotContainer {
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
+    private final LimelightCmd limelightCmd = new LimelightCmd(drive); // Pass the existing SwerveRequest
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
-
     //CHANGE
-    private final CommandXboxController controller = new CommandXboxController(1);
-    private final CommandXboxController manualController = new CommandXboxController(0);
+    private final CommandXboxController controller = new CommandXboxController(0);
+    private final CommandXboxController manualController = new CommandXboxController(1);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     private final Trigger a = controller.a();
@@ -105,11 +106,10 @@ public class RobotContainer {
      drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(-1 * Math.abs(controller.getLeftY())* controller.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
+                  drive.withVelocityX(-1 * Math.abs(controller.getLeftY())* controller.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
                     .withVelocityY(-1 * Math.abs(controller.getLeftX())* controller.getLeftX() * MaxSpeed) // Drive left with negative X (left)
                     .withRotationalRate(-controller.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
             )
-            // -controller.getRightX()
         );
 
 
@@ -134,7 +134,8 @@ public class RobotContainer {
         // manualController.x().whileTrue(new ManualLiberate(liberatorSubsystem));
         // manualController.b().whileTrue(new LiberateStop(liberatorSubsystem));
 
-        // //manualController.a().onTrue(new AlgaeElevatorCmd(elevatorSubsystem, 0.1, liberatorSubsystem));
+        manualController.a().whileTrue(new LimelightCmd(drive));
+
         //manualController.y().onTrue(new AlgaeElevatorCmd(elevatorSubsystem, 1.5, liberatorSubsystem));
 
 
