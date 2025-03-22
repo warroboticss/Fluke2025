@@ -78,8 +78,8 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
     //CHANGE
-    private final CommandXboxController controller = new CommandXboxController(1);
-    private final CommandXboxController manualController = new CommandXboxController(0);
+    private final CommandXboxController controller = new CommandXboxController(0);
+    private final CommandXboxController manualController = new CommandXboxController(1);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     private final LimelightCmd limelightCmd = new LimelightCmd(drivetrain);
@@ -89,6 +89,10 @@ public class RobotContainer {
     private final Trigger x = controller.x();
     private final Trigger y = controller.y();
 
+    private final NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+    private final NetworkTableEntry ta = table.getEntry("ta");
+    private final NetworkTableEntry tx = table.getEntry("tx");
+
     //private final SendableChooser<Command> autoChooser;
 
   public RobotContainer() {
@@ -97,7 +101,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("l4", new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 4));
     coralIndexer.setDefaultCommand(new IndexCmd(coralIndexer));
     limelightSubsystem.setDefaultCommand(new UpdateCoordinatesCommand(limelightSubsystem));
-    //liberatorSubsystem.setDefaultCommand(new DefaultLiberatorCmd(liberatorSubsystem));
+    liberatorSubsystem.setDefaultCommand(new DefaultLiberatorCmd(liberatorSubsystem));
     //elevatorSubsystem.setDefaultCommand(new DefaultElevatorCmd(elevatorSubsystem));
     //liberatorSubsystem.setDefaultCommand(new LiberateStop(liberatorSubsystem));
     configureBindings();
@@ -125,7 +129,7 @@ public class RobotContainer {
         // b.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 2));
         // x.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 3));
         // y.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 4));
-        // controller.rightBumper().onTrue(new InstantCommand(liberatorSubsystem::resetToggle));
+        controller.rightBumper().onTrue(new InstantCommand(liberatorSubsystem::resetToggle));
         //controller.rightBumper().whileTrue(new RobotOriented(drivetrain, () -> controller.getLeftX(), () -> controller.getRightX(), () -> controller.getLeftY()));
         // controller.rightBumper().onTrue(new InstantCommand(() -> drivetrain.setLastRotation(drivetrain.getOperatorForwardDirection())));
 
@@ -136,10 +140,14 @@ public class RobotContainer {
         // manualController.x().whileTrue(new ManualLiberate(liberatorSubsystem));
         // manualController.b().whileTrue(new LiberateStop(liberatorSubsystem));
 
-        manualController.a().whileTrue(new LimelightCmd(drivetrain));
-        manualController.a().whileTrue(Commands.run(() -> {
-          System.out.println("A button pressed!");
-      }));
+        manualController.a().whileTrue(drivetrain.applyRequest(() -> 
+        drive.withVelocityX(-ta.getDouble(0.0) *0.15 * 2)
+        .withVelocityY(0.0)
+        .withRotationalRate(-tx.getDouble(0.0) * 0.05 * 2)
+    ));
+      //   manualController.a().whileTrue(Commands.run(() -> {
+      //     System.out.println("A button pressed!");
+      // }));
 
         //manualController.y().onTrue(new AlgaeElevatorCmd(elevatorSubsystem, 1.5, liberatorSubsystem));
 

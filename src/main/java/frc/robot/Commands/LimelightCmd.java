@@ -31,7 +31,7 @@ public class LimelightCmd extends Command {
 
     public LimelightCmd(CommandSwerveDrivetrain drivetrain) {
         this.drivetrain = drivetrain;
-        addRequirements(drivetrain); // Ensure proper resource management
+        addRequirements(drivetrain);
     }
 
     @Override
@@ -58,9 +58,7 @@ public class LimelightCmd extends Command {
             .withRotationalRate(rotationalAdjust)
         );
 
-        // Optional: Use brake or point modes if required
-        // drivetrain.applyRequest(() -> brake); // Apply braking
-        // drivetrain.applyRequest(() -> point); // Point wheels at a specific direction
+
     }
 
     @Override
