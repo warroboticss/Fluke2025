@@ -43,7 +43,10 @@ public class ElevatorCmd extends Command{
 
     @Override
     public boolean isFinished(){
-        return time.get() > (setpoint + 0.75);    
+        if(setpoint == Constants.ELEVATOR_HEIGHTS[3]){
+            return time.get() > 0.85; 
+        }
+        return time.get() > 1.2;    
     }
 
     @Override

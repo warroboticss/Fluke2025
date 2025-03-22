@@ -78,12 +78,12 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
     //CHANGE
-    private final CommandXboxController controller = new CommandXboxController(0);
-    private final CommandXboxController manualController = new CommandXboxController(1);
+    private final CommandXboxController controller = new CommandXboxController(1);
+    private final CommandXboxController manualController = new CommandXboxController(0
+    );
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     private final LimelightCmd limelightCmd = new LimelightCmd(drivetrain);
-
     private final Trigger a = controller.a();
     private final Trigger b = controller.b();
     private final Trigger x = controller.x();
@@ -102,7 +102,7 @@ public class RobotContainer {
     coralIndexer.setDefaultCommand(new IndexCmd(coralIndexer));
     limelightSubsystem.setDefaultCommand(new UpdateCoordinatesCommand(limelightSubsystem));
     liberatorSubsystem.setDefaultCommand(new DefaultLiberatorCmd(liberatorSubsystem));
-    //elevatorSubsystem.setDefaultCommand(new DefaultElevatorCmd(elevatorSubsystem));
+    elevatorSubsystem.setDefaultCommand(new DefaultElevatorCmd(elevatorSubsystem));
     //liberatorSubsystem.setDefaultCommand(new LiberateStop(liberatorSubsystem));
     configureBindings();
 
@@ -125,10 +125,10 @@ public class RobotContainer {
 
         // controller.rightTrigger().onTrue(new AlgaeRoutineCmd(elevatorSubsystem, liberatorSubsystem, 2));
         // controller.leftTrigger().onTrue(new AlgaeRoutineCmd(elevatorSubsystem, liberatorSubsystem, 1));
-       // a.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 1));
-        // b.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 2));
-        // x.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 3));
-        // y.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 4));
+       a.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 1));
+        b.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 2));
+        x.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 3));
+        y.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 4));
         controller.rightBumper().onTrue(new InstantCommand(liberatorSubsystem::resetToggle));
         //controller.rightBumper().whileTrue(new RobotOriented(drivetrain, () -> controller.getLeftX(), () -> controller.getRightX(), () -> controller.getLeftY()));
         // controller.rightBumper().onTrue(new InstantCommand(() -> drivetrain.setLastRotation(drivetrain.getOperatorForwardDirection())));
@@ -145,11 +145,11 @@ public class RobotContainer {
         .withVelocityY(0.0)
         .withRotationalRate(-tx.getDouble(0.0) * 0.05 * 2)
     ));
+
       //   manualController.a().whileTrue(Commands.run(() -> {
       //     System.out.println("A button pressed!");
       // }));
 
-      manualController.b().whileTrue(elevatorSubsystem.sysIdQuasistatic());
 
         //manualController.y().onTrue(new AlgaeElevatorCmd(elevatorSubsystem, 1.5, liberatorSubsystem));
 

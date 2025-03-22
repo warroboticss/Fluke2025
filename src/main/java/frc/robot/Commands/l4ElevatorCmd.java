@@ -41,7 +41,7 @@ public class l4ElevatorCmd extends Command{
 
     @Override
     public boolean isFinished(){
-        return time.get() > 5;    
+        return time.get() > 1.25;    
     }
 
     @Override
