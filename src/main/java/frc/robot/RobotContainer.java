@@ -141,6 +141,8 @@ public class RobotContainer {
           System.out.println("A button pressed!");
       }));
 
+      manualController.b().whileTrue(elevatorSubsystem.sysIdQuasistatic());
+
         //manualController.y().onTrue(new AlgaeElevatorCmd(elevatorSubsystem, 1.5, liberatorSubsystem));
 
 
