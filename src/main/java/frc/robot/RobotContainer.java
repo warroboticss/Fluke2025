@@ -79,8 +79,7 @@ public class RobotContainer {
 
     //CHANGE
     private final CommandXboxController controller = new CommandXboxController(1);
-    private final CommandXboxController manualController = new CommandXboxController(0
-    );
+    private final CommandXboxController manualController = new CommandXboxController(0);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     private final LimelightCmd limelightCmd = new LimelightCmd(drivetrain);
@@ -141,9 +140,15 @@ public class RobotContainer {
         // manualController.b().whileTrue(new LiberateStop(liberatorSubsystem));
 
         manualController.a().whileTrue(drivetrain.applyRequest(() -> 
-        drive.withVelocityX(-ta.getDouble(0.0) *0.15 * 2)
+        drive.withVelocityX((1 / -ta.getDouble(0.0)) * 5) //(-ta.getDouble(0.0)) * 1.4
         .withVelocityY(0.0)
-        .withRotationalRate(-tx.getDouble(0.0) * 0.05 * 2)
+        .withRotationalRate(-tx.getDouble(0.0) * 0.14)
+    ));
+
+    manualController.rightTrigger().whileTrue(drivetrain.applyRequest(() -> 
+        drive.withVelocityX(0.0) //(-ta.getDouble(0.0)) * 1.4
+        .withVelocityY(1)
+        .withRotationalRate(0.0)
     ));
 
       //   manualController.a().whileTrue(Commands.run(() -> {
