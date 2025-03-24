@@ -140,14 +140,28 @@ public class RobotContainer {
         // manualController.b().whileTrue(new LiberateStop(liberatorSubsystem));
 
         manualController.a().whileTrue(drivetrain.applyRequest(() -> 
-        drive.withVelocityX((1 / -ta.getDouble(0.0)) * 5) //(-ta.getDouble(0.0)) * 1.4
+        drive.withVelocityX(-((1 / -ta.getDouble(0.0)) * 4.3)) //(-ta.getDouble(0.0)) * 1.4
         .withVelocityY(0.0)
-        .withRotationalRate(-tx.getDouble(0.0) * 0.14)
+        .withRotationalRate(-tx.getDouble(0.0) * 0.06)
     ));
+
+    manualController.a().onFalse((drivetrain.runOnce(() -> drivetrain.applyRequest(() -> 
+    drive.withVelocityX(2) //(-ta.getDouble(0.0)) * 1.4
+    .withVelocityY(0.0)
+    .withRotationalRate(0)))
+));
+
+    manualController.a().whileTrue(new InstantCommand(() -> System.out.println(-((1 / -ta.getDouble(0.0)) * 5))));
 
     manualController.rightTrigger().whileTrue(drivetrain.applyRequest(() -> 
         drive.withVelocityX(0.0) //(-ta.getDouble(0.0)) * 1.4
         .withVelocityY(1)
+        .withRotationalRate(0.0)
+    ));
+
+    manualController.leftTrigger().whileTrue(drivetrain.applyRequest(() -> 
+        drive.withVelocityX(0.0) //(-ta.getDouble(0.0)) * 1.4
+        .withVelocityY(-1)
         .withRotationalRate(0.0)
     ));
 
@@ -166,5 +180,9 @@ public class RobotContainer {
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
+  }
+
+  public Command getAutonomousCommand(){
+    return new PathPlannerAuto("Forward");
   }
 }
