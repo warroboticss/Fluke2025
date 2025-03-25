@@ -17,6 +17,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
@@ -138,20 +139,37 @@ public class RobotContainer {
         manualController.leftBumper().whileTrue(new ManualAlgaeDown(liberatorSubsystem));
         // manualController.x().whileTrue(new ManualLiberate(liberatorSubsystem));
         // manualController.b().whileTrue(new LiberateStop(liberatorSubsystem));
+  
+        /* manualController.a().whileTrue(drivetrain.applyRequest(() -> 
+              drive.withVelocityX(-(1 / -ta.getDouble(0.0)) * 4) // Calculated velocity // (-(1 / -ta.getDouble(0.0))) * 4.7
+                    .withVelocityY(0.0)
+                    .withRotationalRate(-tx.getDouble(0.0) * 0.05)
+        )); */
 
-        manualController.a().whileTrue(drivetrain.applyRequest(() -> 
-        drive.withVelocityX(-((1 / -ta.getDouble(0.0)) * 4.3)) //(-ta.getDouble(0.0)) * 1.4
-        .withVelocityY(0.0)
-        .withRotationalRate(-tx.getDouble(0.0) * 0.06)
-    ));
+        manualController.a().whileTrue(
+        new RunCommand(() -> {
+        double taValue = ta.getDouble(0.0);
+        double txValue = tx.getDouble(0.0);
 
-    manualController.a().onFalse((drivetrain.runOnce(() -> drivetrain.applyRequest(() -> 
-    drive.withVelocityX(2) //(-ta.getDouble(0.0)) * 1.4
-    .withVelocityY(0.0)
-    .withRotationalRate(0)))
-));
+        // Calculate translation velocity based on ta
+          double velocityX;
+          if (taValue > 10) {
+              velocityX = 0.5; // Minimum velocity when close to the tag
+          } else {
+              velocityX = -(1 / Math.max(taValue, 1.0)) * 4; // Scale velocity dynamically
+          }
 
-    manualController.a().whileTrue(new InstantCommand(() -> System.out.println(-((1 / -ta.getDouble(0.0)) * 5))));
+        // Pass pre-computed values into the lambda
+          final double finalVelocityX = velocityX; // Declare as final
+          drivetrain.applyRequest(() -> 
+              drive.withVelocityX(finalVelocityX)
+                  .withVelocityY(0.0)
+                  .withRotationalRate(-txValue * 0.05)
+          );
+    }, drivetrain) // Pass the drivetrain as a requirement
+);
+
+    manualController.a().whileTrue(new InstantCommand(() -> System.out.println(ta.getDouble(0.0))));
 
     manualController.rightTrigger().whileTrue(drivetrain.applyRequest(() -> 
         drive.withVelocityX(0.0) //(-ta.getDouble(0.0)) * 1.4

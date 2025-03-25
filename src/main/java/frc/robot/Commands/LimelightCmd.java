@@ -46,7 +46,7 @@ public class LimelightCmd extends Command {
 
         // Calculate adjustments
         double rotationalAdjust = -txValue * kP_AIM; // Align to the target
-        double forwardAdjust = -taValue * kP_RANGE; // Approach the target
+        double forwardAdjust = 1 / taValue * kP_RANGE; // Approach the target
 
         System.out.println("Forward Adjust: " + forwardAdjust);
         System.out.println("Rotational Adjust: " + rotationalAdjust);
@@ -57,8 +57,6 @@ public class LimelightCmd extends Command {
             .withVelocityY(0.0)
             .withRotationalRate(rotationalAdjust)
         );
-
-
     }
 
     @Override
