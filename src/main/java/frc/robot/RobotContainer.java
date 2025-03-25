@@ -70,7 +70,7 @@ public class RobotContainer {
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     public static final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-            .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+            .withDeadband(MaxSpeed * 0.05).withRotationalDeadband(MaxAngularRate * 0.05) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
@@ -140,13 +140,13 @@ public class RobotContainer {
         // manualController.x().whileTrue(new ManualLiberate(liberatorSubsystem));
         // manualController.b().whileTrue(new LiberateStop(liberatorSubsystem));
   
-        /* manualController.a().whileTrue(drivetrain.applyRequest(() -> 
-              drive.withVelocityX(-(1 / -ta.getDouble(0.0)) * 4) // Calculated velocity // (-(1 / -ta.getDouble(0.0))) * 4.7
+         manualController.a().whileTrue(drivetrain.applyRequest(() -> 
+              drive.withVelocityX(-(1 / Math.min(-ta.getDouble(0.0), 6)) * 3.7) // Calculated velocity // (-(1 / -ta.getDouble(0.0))) * 4.7
                     .withVelocityY(0.0)
                     .withRotationalRate(-tx.getDouble(0.0) * 0.05)
-        )); */
+        )); 
 
-        manualController.a().whileTrue(
+       /*  manualController.a().whileTrue(
         new RunCommand(() -> {
         double taValue = ta.getDouble(0.0);
         double txValue = tx.getDouble(0.0);
@@ -167,7 +167,7 @@ public class RobotContainer {
                   .withRotationalRate(-txValue * 0.05)
           );
     }, drivetrain) // Pass the drivetrain as a requirement
-);
+); */
 
     manualController.a().whileTrue(new InstantCommand(() -> System.out.println(ta.getDouble(0.0))));
 
