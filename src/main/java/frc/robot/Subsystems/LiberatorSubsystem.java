@@ -62,6 +62,12 @@ public class LiberatorSubsystem extends SubsystemBase {
     }
 
 
+
+    public void l1liberate(){
+        liberatorMotor1.set(0.1);
+    }
+
+
     // public boolean getLock(){
     //     return lock;
     // }

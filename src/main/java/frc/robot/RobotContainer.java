@@ -62,7 +62,7 @@ public class RobotContainer {
   
   private final LiberatorSubsystem liberatorSubsystem = new LiberatorSubsystem();
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
-  private final CoralIndexer coralIndexer = new CoralIndexer();
+  //private final CoralIndexer coralIndexer = new CoralIndexer();
   private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
 
   public static double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -72,6 +72,8 @@ public class RobotContainer {
     public static final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.05).withRotationalDeadband(MaxAngularRate * 0.05) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+    private static final SwerveRequest.RobotCentric driveRobotOriented = new SwerveRequest.RobotCentric()
+            .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
     private final SwerveRequest.FieldCentric swerveRequest = new SwerveRequest.FieldCentric();
@@ -98,13 +100,14 @@ public class RobotContainer {
   public RobotContainer() {
     //autoChooser = AutoBuilder.buildAutoChooser("Test");
 
-    NamedCommands.registerCommand("l4", new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 4));
-    coralIndexer.setDefaultCommand(new IndexCmd(coralIndexer));
+    NamedCommands.registerCommand("l1", new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 1));
+    //coralIndexer.setDefaultCommand(new IndexCmd(coralIndexer));
     limelightSubsystem.setDefaultCommand(new UpdateCoordinatesCommand(limelightSubsystem));
-    liberatorSubsystem.setDefaultCommand(new DefaultLiberatorCmd(liberatorSubsystem));
-    elevatorSubsystem.setDefaultCommand(new DefaultElevatorCmd(elevatorSubsystem));
+    //liberatorSubsystem.setDefaultCommand(new DefaultLiberatorCmd(liberatorSubsystem));
+    //elevatorSubsystem.setDefaultCommand(new DefaultElevatorCmd(elevatorSubsystem));
     //liberatorSubsystem.setDefaultCommand(new LiberateStop(liberatorSubsystem));
     configureBindings();
+
 
   }
 
@@ -120,31 +123,48 @@ public class RobotContainer {
 
 
         // reset the field-centric heading on left bumper press
-        controller.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+        //controller.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
 
         // controller.rightTrigger().onTrue(new AlgaeRoutineCmd(elevatorSubsystem, liberatorSubsystem, 2));
         // controller.leftTrigger().onTrue(new AlgaeRoutineCmd(elevatorSubsystem, liberatorSubsystem, 1));
-       a.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 1));
+      a.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 1));
         b.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 2));
-        x.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 3));
-        y.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 4));
-        controller.rightBumper().onTrue(new InstantCommand(liberatorSubsystem::resetToggle));
+       x.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 3));
+       y.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 4));
+       controller.rightBumper().whileTrue(drivetrain.applyRequest(() -> 
+       driveRobotOriented.withVelocityX(0.0)
+       .withVelocityY(0.1)
+       .withRotationalRate(0.0)
+       ));
+
+       controller.leftBumper().whileTrue(drivetrain.applyRequest(() ->
+       driveRobotOriented.withVelocityX(0.0)
+       .withVelocityY(-0.1)
+       .withRotationalRate(0.0)
+       ));
+
+       controller.leftTrigger().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+       // controller.rightBumper().onTrue(new InstantCommand(liberatorSubsystem::resetToggle));
         //controller.rightBumper().whileTrue(new RobotOriented(drivetrain, () -> controller.getLeftX(), () -> controller.getRightX(), () -> controller.getLeftY()));
         // controller.rightBumper().onTrue(new InstantCommand(() -> drivetrain.setLastRotation(drivetrain.getOperatorForwardDirection())));
 
 
         // manual controls
-        manualController.rightBumper().whileTrue(new ManualAlgaeUp(liberatorSubsystem));
-        manualController.leftBumper().whileTrue(new ManualAlgaeDown(liberatorSubsystem));
+        //manualController.rightBumper().whileTrue(new ManualAlgaeUp(liberatorSubsystem));
+        //manualController.leftBumper().whileTrue(new ManualAlgaeDown(liberatorSubsystem));
         // manualController.x().whileTrue(new ManualLiberate(liberatorSubsystem));
         // manualController.b().whileTrue(new LiberateStop(liberatorSubsystem));
   
          manualController.a().whileTrue(drivetrain.applyRequest(() -> 
-              drive.withVelocityX((1 / Math.min(ta.getDouble(0.0), 8)) * 3.7) 
-                    .withVelocityY((Math.max(-3, Math.min(3, -tx.getDouble(0.0))))* 0.16)
-                    .withRotationalRate(-tx.getDouble(0.0) * 0.05)
+              drive.withVelocityX((1 / Math.max(2, Math.min(ta.getDouble(0.0), 6))) * 2.75) // 2.75
+                    .withVelocityY((Math.max(-2.4, Math.min(2.4, -tx.getDouble(0.0))))* 0.15)
+                    .withRotationalRate((-tx.getDouble(0.0) * 0.1) / Math.max(1, ta.getDouble(0.0)))
         )); 
+        //.withVelocityY((Math.max(-2.4, Math.min(2.4, -tx.getDouble(0.0) * Math.sqrt(Math.max(0.1, ta.getDouble(0.0))))) * 0.1))
+
+        // .withRotationalRate(-tx.getDouble(0.0) * 0.05)
+        // .withVelocityY((Math.max(-2.4, Math.min(2.4, -tx.getDouble(0.0))))* 0.1)
 
     manualController.a().whileTrue(new InstantCommand(() -> System.out.println(ta.getDouble(0.0))));
 

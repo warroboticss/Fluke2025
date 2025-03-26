@@ -15,6 +15,11 @@ public class ScoreCmd extends SequentialCommandGroup{
                 new l4ElevatorCmd(elevator, liberator),
                 new LiberateCommand(liberator, elevator));
         }
+        else if(height == 1){
+            addCommands(
+                new L1LiberateCommand(liberator, elevator)
+            );
+        }
         else{
             addCommands(
                 new ElevatorCmd(elevator, Constants.ELEVATOR_HEIGHTS[height+1], liberator),
