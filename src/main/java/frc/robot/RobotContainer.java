@@ -141,33 +141,10 @@ public class RobotContainer {
         // manualController.b().whileTrue(new LiberateStop(liberatorSubsystem));
   
          manualController.a().whileTrue(drivetrain.applyRequest(() -> 
-              drive.withVelocityX(-(1 / Math.min(-ta.getDouble(0.0), 6)) * 3.7) // Calculated velocity // (-(1 / -ta.getDouble(0.0))) * 4.7
-                    .withVelocityY(0.0)
+              drive.withVelocityX((1 / Math.min(ta.getDouble(0.0), 8)) * 3.7) 
+                    .withVelocityY((Math.max(-3, Math.min(3, -tx.getDouble(0.0))))* 0.16)
                     .withRotationalRate(-tx.getDouble(0.0) * 0.05)
         )); 
-
-       /*  manualController.a().whileTrue(
-        new RunCommand(() -> {
-        double taValue = ta.getDouble(0.0);
-        double txValue = tx.getDouble(0.0);
-
-        // Calculate translation velocity based on ta
-          double velocityX;
-          if (taValue > 10) {
-              velocityX = 0.5; // Minimum velocity when close to the tag
-          } else {
-              velocityX = -(1 / Math.max(taValue, 1.0)) * 4; // Scale velocity dynamically
-          }
-
-        // Pass pre-computed values into the lambda
-          final double finalVelocityX = velocityX; // Declare as final
-          drivetrain.applyRequest(() -> 
-              drive.withVelocityX(finalVelocityX)
-                  .withVelocityY(0.0)
-                  .withRotationalRate(-txValue * 0.05)
-          );
-    }, drivetrain) // Pass the drivetrain as a requirement
-); */
 
     manualController.a().whileTrue(new InstantCommand(() -> System.out.println(ta.getDouble(0.0))));
 
