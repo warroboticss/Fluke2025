@@ -20,6 +20,7 @@ public class L1LiberateCommand extends Command{
     }
 
     public void initialize(){
+        liberator.setFollowerL1();
         liberator.stop();
         
         //slow drive
@@ -40,6 +41,7 @@ public class L1LiberateCommand extends Command{
 
     @Override
     public void end(boolean interrupted) {
+        liberator.setFollowerReg();
         time.stop();
         time.reset();
         liberator.stop();

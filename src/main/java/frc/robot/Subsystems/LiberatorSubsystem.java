@@ -64,7 +64,7 @@ public class LiberatorSubsystem extends SubsystemBase {
 
 
     public void l1liberate(){
-        liberatorMotor1.set(0.1);
+        liberatorMotor1.set(0.12);
     }
 
 
@@ -82,6 +82,14 @@ public class LiberatorSubsystem extends SubsystemBase {
 
     public void liberate(){
         liberatorMotor1.set(0.15);
+    }
+
+    public void setFollowerL1(){
+        liberatorMotor2.set(-0.24);
+    }
+
+    public void setFollowerReg(){
+        liberatorMotor2.setControl(new Follower(liberatorMotor1.getDeviceID(), true));
     }
 
     public void run(double speed){

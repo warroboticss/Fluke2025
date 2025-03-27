@@ -46,7 +46,7 @@ public class ElevatorCmd extends Command{
         if(setpoint == Constants.ELEVATOR_HEIGHTS[3]){
             return time.get() > 0.85; 
         }
-        return time.get() > 1.2;    
+        return time.get() > 1.3;    
     }
 
     @Override

@@ -103,8 +103,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("l1", new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 1));
     //coralIndexer.setDefaultCommand(new IndexCmd(coralIndexer));
     limelightSubsystem.setDefaultCommand(new UpdateCoordinatesCommand(limelightSubsystem));
-    //liberatorSubsystem.setDefaultCommand(new DefaultLiberatorCmd(liberatorSubsystem));
-    //elevatorSubsystem.setDefaultCommand(new DefaultElevatorCmd(elevatorSubsystem));
+    liberatorSubsystem.setDefaultCommand(new DefaultLiberatorCmd(liberatorSubsystem));
+    elevatorSubsystem.setDefaultCommand(new DefaultElevatorCmd(elevatorSubsystem));
     //liberatorSubsystem.setDefaultCommand(new LiberateStop(liberatorSubsystem));
     configureBindings();
 
@@ -132,15 +132,16 @@ public class RobotContainer {
         b.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 2));
        x.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 3));
        y.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 4));
+       
        controller.rightBumper().whileTrue(drivetrain.applyRequest(() -> 
        driveRobotOriented.withVelocityX(0.0)
-       .withVelocityY(0.1)
+       .withVelocityY(-0.3)
        .withRotationalRate(0.0)
        ));
 
        controller.leftBumper().whileTrue(drivetrain.applyRequest(() ->
        driveRobotOriented.withVelocityX(0.0)
-       .withVelocityY(-0.1)
+       .withVelocityY(0.3)
        .withRotationalRate(0.0)
        ));
 
