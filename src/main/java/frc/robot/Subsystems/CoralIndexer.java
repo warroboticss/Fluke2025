@@ -14,5 +14,9 @@ public class CoralIndexer extends SubsystemBase {
     public void index() {
         IndexMotor.setControl(new DutyCycleOut(-0.1)); // Set motor to run
     }
+
+    public void reverseIndex(){
+        IndexMotor.set(0.1);
+    }
 }
 

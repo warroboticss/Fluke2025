@@ -36,12 +36,13 @@ import frc.robot.Commands.ManualElevatorUp;
 // import frc.robot.Commands.ManualLiberate;
 import frc.robot.Commands.ManualLiberatorCmd;
 import frc.robot.Commands.RemoveAlgae;
+import frc.robot.Commands.ReverseIndexCmd;
 // import frc.robot.Commands.RobotOriented;
 import frc.robot.Commands.ScoreCmd;
 import frc.robot.Commands.l4ElevatorCmd;
 import frc.robot.Commands.IndexCmd;
 import frc.robot.Commands.UpdateCoordinatesCommand;
-import frc.robot.Commands.LimelightCmd;
+//import frc.robot.Commands.LimelightCmd;
 import frc.robot.Subsystems.CommandSwerveDrivetrain;
 import frc.robot.Subsystems.ElevatorSubsystem;
 import frc.robot.Subsystems.LiberatorSubsystem;
@@ -62,7 +63,7 @@ public class RobotContainer {
   
   private final LiberatorSubsystem liberatorSubsystem = new LiberatorSubsystem();
   private final ElevatorSubsystem elevatorSubsystem = new ElevatorSubsystem();
-  //private final CoralIndexer coralIndexer = new CoralIndexer();
+  private final CoralIndexer coralIndexer = new CoralIndexer();
   private final LimelightSubsystem limelightSubsystem = new LimelightSubsystem();
 
   public static double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
@@ -85,7 +86,7 @@ public class RobotContainer {
     private final CommandXboxController manualController = new CommandXboxController(0);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
-    private final LimelightCmd limelightCmd = new LimelightCmd(drivetrain);
+    //private final LimelightCmd limelightCmd = new LimelightCmd(drivetrain);
     private final Trigger a = controller.a();
     private final Trigger b = controller.b();
     private final Trigger x = controller.x();
@@ -146,6 +147,7 @@ public class RobotContainer {
        ));
 
        controller.leftTrigger().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
+       //controller.rightTrigger().onTrue(new ReverseIndexCmd(coralIndexer));
        // controller.rightBumper().onTrue(new InstantCommand(liberatorSubsystem::resetToggle));
         //controller.rightBumper().whileTrue(new RobotOriented(drivetrain, () -> controller.getLeftX(), () -> controller.getRightX(), () -> controller.getLeftY()));
         // controller.rightBumper().onTrue(new InstantCommand(() -> drivetrain.setLastRotation(drivetrain.getOperatorForwardDirection())));
@@ -157,17 +159,17 @@ public class RobotContainer {
         // manualController.x().whileTrue(new ManualLiberate(liberatorSubsystem));
         // manualController.b().whileTrue(new LiberateStop(liberatorSubsystem));
   
-         manualController.a().whileTrue(drivetrain.applyRequest(() -> 
-              drive.withVelocityX((1 / Math.max(2, Math.min(ta.getDouble(0.0), 6))) * 2.75) // 2.75
-                    .withVelocityY((Math.max(-2.4, Math.min(2.4, -tx.getDouble(0.0))))* 0.15)
-                    .withRotationalRate((-tx.getDouble(0.0) * 0.1) / Math.max(1, ta.getDouble(0.0)))
-        )); 
+        //  manualController.a().whileTrue(drivetrain.applyRequest(() -> 
+        //       drive.withVelocityX((1 / Math.max(2, Math.min(ta.getDouble(0.0), 6))) * 2.75) // 2.75
+        //             .withVelocityY((Math.max(-2.4, Math.min(2.4, -tx.getDouble(0.0))))* 0.15)
+        //             .withRotationalRate((-tx.getDouble(0.0) * 0.1) / Math.max(1, ta.getDouble(0.0)))
+        // )); 
         //.withVelocityY((Math.max(-2.4, Math.min(2.4, -tx.getDouble(0.0) * Math.sqrt(Math.max(0.1, ta.getDouble(0.0))))) * 0.1))
 
         // .withRotationalRate(-tx.getDouble(0.0) * 0.05)
         // .withVelocityY((Math.max(-2.4, Math.min(2.4, -tx.getDouble(0.0))))* 0.1)
 
-    manualController.a().whileTrue(new InstantCommand(() -> System.out.println(ta.getDouble(0.0))));
+    //manualController.a().whileTrue(new InstantCommand(() -> System.out.println(ta.getDouble(0.0))));
 
     manualController.rightTrigger().whileTrue(drivetrain.applyRequest(() -> 
         drive.withVelocityX(0.0) //(-ta.getDouble(0.0)) * 1.4
@@ -199,6 +201,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand(){
-    return new PathPlannerAuto("Forward");
+    return new PathPlannerAuto("L1");
   }
 }
