@@ -73,6 +73,7 @@ public class ElevatorSubsystem extends SubsystemBase{
     private final PIDController elevatorPID = new PIDController(0.5, 0.0, 0.0);
     private final MotionMagicDutyCycle motionPID = new MotionMagicDutyCycle(0);
     private static boolean lock = false;
+    private static boolean l4Toggle = false;
     DigitalInput home = new DigitalInput(0);
 
     private final Timer time = new Timer();
@@ -118,9 +119,13 @@ public class ElevatorSubsystem extends SubsystemBase{
         //System.out.println(getPosition()*Constants.INCHES_PER_ROTATION_ELEVATOR);
     }
 
+    public void setl4Toggle(boolean tog){
+        l4Toggle = tog;
+    }
+
 
     public void l4(){
-        elevatorMotorLeft.set(elevatorPID.calculate(getPosition()*Constants.INCHES_PER_ROTATION_ELEVATOR, 7.5));
+        elevatorMotorLeft.set(elevatorPID.calculate(getPosition()*Constants.INCHES_PER_ROTATION_ELEVATOR, 7.35));
     }
 
     public void manual(int number){
@@ -132,18 +137,43 @@ public class ElevatorSubsystem extends SubsystemBase{
     }
 
 
+    public void l4home(){
+        //if(!lock){
+        //System.out.println(home.get());
+            if(!home.get()){
+                elevatorMotorLeft.set(-0.5);
+            }
+            
+        //}
+    }
+
+    public void setZero(){
+        elevatorMotorLeft.setPosition(0);
+    }
+
+
+
    
     
 
     public void home(){
         //if(!lock){
         //System.out.println(home.get());
-            while(!home.get()){
-                elevatorMotorLeft.set(-0.3);
+            if(!home.get()){
+                if(l4Toggle){
+                    System.out.println("l4");
+                    elevatorMotorLeft.set(-0.5);
+                }
+                else{
+                    elevatorMotorLeft.set(-0.3);
+                }
+                
             }
-            elevatorMotorLeft.set(0);
-            elevatorMotorLeft.setPosition(0);
         //}
+    }
+
+    public void stopElevator(){
+        elevatorMotorLeft.set(0);
     }
 
     public boolean getLock(){

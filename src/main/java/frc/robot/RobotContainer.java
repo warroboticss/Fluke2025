@@ -102,7 +102,7 @@ public class RobotContainer {
     //autoChooser = AutoBuilder.buildAutoChooser("Test");
 
     NamedCommands.registerCommand("l1", new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 1));
-    //coralIndexer.setDefaultCommand(new IndexCmd(coralIndexer));
+    coralIndexer.setDefaultCommand(new IndexCmd(coralIndexer));
     limelightSubsystem.setDefaultCommand(new UpdateCoordinatesCommand(limelightSubsystem));
     liberatorSubsystem.setDefaultCommand(new DefaultLiberatorCmd(liberatorSubsystem));
     elevatorSubsystem.setDefaultCommand(new DefaultElevatorCmd(elevatorSubsystem));
@@ -147,15 +147,21 @@ public class RobotContainer {
        ));
 
        controller.leftTrigger().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
-       //controller.rightTrigger().onTrue(new ReverseIndexCmd(coralIndexer));
+       controller.rightTrigger().whileTrue(new ReverseIndexCmd(coralIndexer));
        // controller.rightBumper().onTrue(new InstantCommand(liberatorSubsystem::resetToggle));
         //controller.rightBumper().whileTrue(new RobotOriented(drivetrain, () -> controller.getLeftX(), () -> controller.getRightX(), () -> controller.getLeftY()));
         // controller.rightBumper().onTrue(new InstantCommand(() -> drivetrain.setLastRotation(drivetrain.getOperatorForwardDirection())));
 
 
         // manual controls
-        //manualController.rightBumper().whileTrue(new ManualAlgaeUp(liberatorSubsystem));
-        //manualController.leftBumper().whileTrue(new ManualAlgaeDown(liberatorSubsystem));
+        manualController.rightBumper().whileTrue(new ManualAlgaeUp(liberatorSubsystem));
+        manualController.leftBumper().whileTrue(new ManualAlgaeDown(liberatorSubsystem));
+
+        // manualController.a().onTrue(liberatorSubsystem.runOnce(() -> liberatorSubsystem.increaseLeft()));
+        // manualController.b().onTrue(liberatorSubsystem.runOnce(() -> liberatorSubsystem.increaseRight()));
+        // manualController.x().onTrue(liberatorSubsystem.runOnce(() -> liberatorSubsystem.decreaseLeft()));
+        // manualController.y().onTrue(liberatorSubsystem.runOnce(() -> liberatorSubsystem.decreaseRight()));
+
         // manualController.x().whileTrue(new ManualLiberate(liberatorSubsystem));
         // manualController.b().whileTrue(new LiberateStop(liberatorSubsystem));
   
@@ -171,17 +177,17 @@ public class RobotContainer {
 
     //manualController.a().whileTrue(new InstantCommand(() -> System.out.println(ta.getDouble(0.0))));
 
-    manualController.rightTrigger().whileTrue(drivetrain.applyRequest(() -> 
-        drive.withVelocityX(0.0) //(-ta.getDouble(0.0)) * 1.4
-        .withVelocityY(1)
-        .withRotationalRate(0.0)
-    ));
+    // manualController.rightTrigger().whileTrue(drivetrain.applyRequest(() -> 
+    //     drive.withVelocityX(0.0) //(-ta.getDouble(0.0)) * 1.4
+    //     .withVelocityY(1)
+    //     .withRotationalRate(0.0)
+    // ));
 
-    manualController.leftTrigger().whileTrue(drivetrain.applyRequest(() -> 
-        drive.withVelocityX(0.0) //(-ta.getDouble(0.0)) * 1.4
-        .withVelocityY(-1)
-        .withRotationalRate(0.0)
-    ));
+    // manualController.leftTrigger().whileTrue(drivetrain.applyRequest(() -> 
+    //     drive.withVelocityX(0.0) //(-ta.getDouble(0.0)) * 1.4
+    //     .withVelocityY(-1)
+    //     .withRotationalRate(0.0)
+    // ));
 
       //   manualController.a().whileTrue(Commands.run(() -> {
       //     System.out.println("A button pressed!");

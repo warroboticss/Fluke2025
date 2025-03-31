@@ -28,6 +28,8 @@ public class LiberatorSubsystem extends SubsystemBase {
 
      //private final PIDController algaePID = new PIDController(0.1, 0, 0);
      private static MotionMagicDutyCycle algaePID = new MotionMagicDutyCycle(0);
+     private static double leftSpeed = 0.0;
+     private static double rightSpeed =0.2;
 
     //private static boolean lock;
       
@@ -61,10 +63,36 @@ public class LiberatorSubsystem extends SubsystemBase {
         coralToggle = false;
     }
 
+    // public void increaseLeft(){
+    //     leftSpeed += 0.02;
+    //     liberatorMotor1.set(leftSpeed);
+    //     System.out.println("Left is: " + leftSpeed);
+    // }
 
+    // public void increaseRight(){
+    //     rightSpeed -= 0.02;
+    //     liberatorMotor1.set(rightSpeed);
+    //     System.out.println("Right is: " + rightSpeed);
+    // }
+
+    // public void decreaseLeft(){
+    //     leftSpeed -= 0.02;
+    //     liberatorMotor1.set(leftSpeed);
+    //     System.out.println("Left is: " + leftSpeed);
+    // }
+
+    public void decreaseRight(){
+        rightSpeed += 0.02;
+        liberatorMotor1.set(rightSpeed);
+        System.out.println("Right is: " + rightSpeed);
+    }
 
     public void l1liberate(){
-        liberatorMotor1.set(0.12);
+        liberatorMotor1.set(0.07);
+    }
+
+    public void setFollowerL1(){
+        liberatorMotor2.set(-0.21);
     }
 
 
@@ -84,9 +112,7 @@ public class LiberatorSubsystem extends SubsystemBase {
         liberatorMotor1.set(0.15);
     }
 
-    public void setFollowerL1(){
-        liberatorMotor2.set(-0.24);
-    }
+    
 
     public void setFollowerReg(){
         liberatorMotor2.setControl(new Follower(liberatorMotor1.getDeviceID(), true));

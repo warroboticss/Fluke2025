@@ -20,7 +20,6 @@ public class L1LiberateCommand extends Command{
     }
 
     public void initialize(){
-        liberator.setFollowerL1();
         liberator.stop();
         
         //slow drive
@@ -30,6 +29,7 @@ public class L1LiberateCommand extends Command{
     public void execute(){
         if(!liberator.getLibLock()){
             liberator.l1liberate();
+            liberator.setFollowerL1();
             time.start();
         }
         
@@ -57,7 +57,7 @@ public class L1LiberateCommand extends Command{
         time.reset();
         liberator.stop();
         elevator.setLock(false);
-        elevator.home();
+        // elevator.home();
         liberator.setCoralToggle(false);
         liberator.setLibLock(false);
         System.out.println("RAN");

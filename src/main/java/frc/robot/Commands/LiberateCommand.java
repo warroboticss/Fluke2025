@@ -35,8 +35,8 @@ public class LiberateCommand extends Command{
     }
 
     public boolean isFinished(){
-        return time.get() >= 1.5;
-    }
+        return time.get() >= 1;
+    } 
 
     @Override
     public void end(boolean interrupted) {
@@ -44,7 +44,7 @@ public class LiberateCommand extends Command{
         time.reset();
         liberator.stop();
         elevator.setLock(false);
-        elevator.home();
+        // elevator.home();
         liberator.setCoralToggle(false);
         liberator.setLibLock(false);
         System.out.println("RAN");

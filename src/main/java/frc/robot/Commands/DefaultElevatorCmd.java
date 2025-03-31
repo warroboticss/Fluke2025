@@ -18,6 +18,20 @@ public class DefaultElevatorCmd extends Command{
     public void execute(){
         elevator.home();
     }
+
+    @Override
+    public boolean isFinished() {
+        // TODO Auto-generated method stub
+        return elevator.getHome();
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        // TODO Auto-generated method stub
+        elevator.setl4Toggle(false);
+        elevator.stopElevator();
+        elevator.setZero();
+    }
     
 }
 

@@ -29,6 +29,7 @@ public class l4ElevatorCmd extends Command{
         elevator.setLock(true);
         liberator.stop();
         liberator.setLibLock(true);
+        elevator.setl4Toggle(true);
     }
 
     @Override
@@ -47,6 +48,7 @@ public class l4ElevatorCmd extends Command{
     @Override
     public void end(boolean interrupted) {
         // TODO Auto-generated method stub
+        elevator.setl4Toggle(true);
         time.stop();
         time.reset();
         liberator.setLibLock(false);
@@ -57,6 +59,7 @@ public class l4ElevatorCmd extends Command{
         time.stop();
         time.reset();
         liberator.setLibLock(false);
+        elevator.setl4Toggle(true);
     }
 
     
