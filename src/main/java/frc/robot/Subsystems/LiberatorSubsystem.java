@@ -81,18 +81,18 @@ public class LiberatorSubsystem extends SubsystemBase {
     //     System.out.println("Left is: " + leftSpeed);
     // }
 
-    public void decreaseRight(){
-        rightSpeed += 0.02;
-        liberatorMotor1.set(rightSpeed);
-        System.out.println("Right is: " + rightSpeed);
-    }
+    // public void decreaseRight(){
+    //     rightSpeed += 0.02;
+    //     liberatorMotor1.set(rightSpeed);
+    //     System.out.println("Right is: " + rightSpeed);
+    // }
 
     public void l1liberate(){
-        liberatorMotor1.set(0.07);
+        liberatorMotor1.set(0.05);
     }
 
     public void setFollowerL1(){
-        liberatorMotor2.set(-0.21);
+        liberatorMotor2.set(-0.19);
     }
 
 

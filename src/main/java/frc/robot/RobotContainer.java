@@ -102,6 +102,7 @@ public class RobotContainer {
     //autoChooser = AutoBuilder.buildAutoChooser("Test");
 
     NamedCommands.registerCommand("l1", new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 1));
+    NamedCommands.registerCommand("index", new IndexCmd(coralIndexer));
     coralIndexer.setDefaultCommand(new IndexCmd(coralIndexer));
     limelightSubsystem.setDefaultCommand(new UpdateCoordinatesCommand(limelightSubsystem));
     liberatorSubsystem.setDefaultCommand(new DefaultLiberatorCmd(liberatorSubsystem));
@@ -207,6 +208,6 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand(){
-    return new PathPlannerAuto("L1");
+    return new PathPlannerAuto("Forward");
   }
 }
