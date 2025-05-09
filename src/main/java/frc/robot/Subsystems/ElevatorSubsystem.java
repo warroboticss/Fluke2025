@@ -125,7 +125,7 @@ public class ElevatorSubsystem extends SubsystemBase{
 
 
     public void l4(){
-        elevatorMotorLeft.set(elevatorPID.calculate(getPosition()*Constants.INCHES_PER_ROTATION_ELEVATOR, 7.35));
+        elevatorMotorLeft.set(elevatorPID.calculate(getPosition()*Constants.INCHES_PER_ROTATION_ELEVATOR, 7.375)); // was 7.35
     }
 
     public void manual(int number){

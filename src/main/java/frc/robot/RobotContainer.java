@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 // import frc.robot.Commands.AlgaeElevatorCmd;
 // import frc.robot.Commands.AlgaeRoutineCmd;
@@ -82,8 +83,8 @@ public class RobotContainer {
     private final Telemetry logger = new Telemetry(MaxSpeed);
 
     //CHANGE
-    private final CommandXboxController controller = new CommandXboxController(1);
-    private final CommandXboxController manualController = new CommandXboxController(0);
+    private final CommandXboxController controller = new CommandXboxController(0);
+    private final CommandXboxController manualController = new CommandXboxController(1);
 
     public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
     //private final LimelightCmd limelightCmd = new LimelightCmd(drivetrain);
@@ -109,6 +110,7 @@ public class RobotContainer {
     elevatorSubsystem.setDefaultCommand(new DefaultElevatorCmd(elevatorSubsystem));
     //liberatorSubsystem.setDefaultCommand(new LiberateStop(liberatorSubsystem));
     configureBindings();
+    SlewRateLimiter filter = new SlewRateLimiter(0.5);
 
 
   }
@@ -117,9 +119,9 @@ public class RobotContainer {
      drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                  drive.withVelocityX(-1 * Math.abs(controller.getLeftY())* controller.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(-1 * Math.abs(controller.getLeftX())* controller.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(-controller.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+                  drive.withVelocityX((-1 * Math.abs(controller.getLeftY())* controller.getLeftY() * MaxSpeed) * 0.5) // Drive forward with negative Y (forward)
+                    .withVelocityY((-1 * Math.abs(controller.getLeftX())* controller.getLeftX() * MaxSpeed) * 0.5) // Drive left with negative X (left)
+                    .withRotationalRate((-controller.getRightX() * MaxAngularRate) * 0.5) // Drive counterclockwise with negative X (left)
             )
         );
 
@@ -128,14 +130,14 @@ public class RobotContainer {
         //controller.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
 
-        // controller.rightTrigger().onTrue(new AlgaeRoutineCmd(elevatorSubsystem, liberatorSubsystem, 2));
-        // controller.leftTrigger().onTrue(new AlgaeRoutineCmd(elevatorSubsystem, liberatorSubsystem, 1));
-      a.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 1));
-        b.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 2));
+        //controller.rightTrigger().onTrue(new AlgaeRoutineCmd(elevatorSubsystem, liberatorSubsystem, 2));
+        //controller.leftTrigger().onTrue(new AlgaeRoutineCmd(elevatorSubsystem, liberatorSubsystem, 1));
+       a.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 1));
+       b.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 2));
        x.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 3));
        y.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 4));
        
-       controller.rightBumper().whileTrue(drivetrain.applyRequest(() -> 
+      /*  controller.rightBumper().whileTrue(drivetrain.applyRequest(() -> 
        driveRobotOriented.withVelocityX(0.0)
        .withVelocityY(-0.3)
        .withRotationalRate(0.0)
@@ -145,18 +147,20 @@ public class RobotContainer {
        driveRobotOriented.withVelocityX(0.0)
        .withVelocityY(0.3)
        .withRotationalRate(0.0)
-       ));
+       )); */
 
        controller.leftTrigger().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
        controller.rightTrigger().whileTrue(new ReverseIndexCmd(coralIndexer));
+
+
        // controller.rightBumper().onTrue(new InstantCommand(liberatorSubsystem::resetToggle));
         //controller.rightBumper().whileTrue(new RobotOriented(drivetrain, () -> controller.getLeftX(), () -> controller.getRightX(), () -> controller.getLeftY()));
         // controller.rightBumper().onTrue(new InstantCommand(() -> drivetrain.setLastRotation(drivetrain.getOperatorForwardDirection())));
 
 
         // manual controls
-        manualController.rightBumper().whileTrue(new ManualAlgaeUp(liberatorSubsystem));
-        manualController.leftBumper().whileTrue(new ManualAlgaeDown(liberatorSubsystem));
+        controller.povUp().whileTrue(new ManualAlgaeUp(liberatorSubsystem));
+        controller.povDown().whileTrue(new ManualAlgaeDown(liberatorSubsystem));
 
         // manualController.a().onTrue(liberatorSubsystem.runOnce(() -> liberatorSubsystem.increaseLeft()));
         // manualController.b().onTrue(liberatorSubsystem.runOnce(() -> liberatorSubsystem.increaseRight()));

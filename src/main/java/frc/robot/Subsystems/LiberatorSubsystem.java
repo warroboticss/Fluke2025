@@ -19,7 +19,7 @@ public class LiberatorSubsystem extends SubsystemBase {
     private static TalonFX liberatorMotor2 = new TalonFX(16, "rio");
     private static TalonFX algaeMotor = new TalonFX(19, "rio");
     private LaserCan lc = new LaserCan(20);
-    Orchestra m_orchestra = new Orchestra();
+    Orchestra m_orchestra = new Orchestra(); 
     // PositionDutyCycle pid = new PositionDutyCycle(0);
     TalonFXConfiguration cfg = new TalonFXConfiguration();
     private static Timer time = new Timer();
@@ -194,11 +194,11 @@ public class LiberatorSubsystem extends SubsystemBase {
     }
 
     public void manualAlgaeUp(){
-        algaeMotor.set(0.17);
+        algaeMotor.set(0.3);
     }
 
     public void manualAlgaeDown(){
-        algaeMotor.set(-0.17);
+        algaeMotor.set(-0.3);
     }
 
     public void setAlgae(double speed){
