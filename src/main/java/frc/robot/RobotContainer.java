@@ -81,6 +81,7 @@ public class RobotContainer {
     private final SwerveRequest.FieldCentric swerveRequest = new SwerveRequest.FieldCentric();
 
     private final Telemetry logger = new Telemetry(MaxSpeed);
+    SlewRateLimiter filter = new SlewRateLimiter(0.5);
 
     //CHANGE
     private final CommandXboxController controller = new CommandXboxController(0);
@@ -110,20 +111,18 @@ public class RobotContainer {
     elevatorSubsystem.setDefaultCommand(new DefaultElevatorCmd(elevatorSubsystem));
     //liberatorSubsystem.setDefaultCommand(new LiberateStop(liberatorSubsystem));
     configureBindings();
-    SlewRateLimiter filter = new SlewRateLimiter(0.5);
-
-
   }
 
+
   private void configureBindings() {
-     drivetrain.setDefaultCommand(
-            // Drivetrain will execute this command periodically
-            drivetrain.applyRequest(() ->
-                  drive.withVelocityX((-1 * Math.abs(controller.getLeftY())* controller.getLeftY() * MaxSpeed) * 0.5) // Drive forward with negative Y (forward)
-                    .withVelocityY((-1 * Math.abs(controller.getLeftX())* controller.getLeftX() * MaxSpeed) * 0.5) // Drive left with negative X (left)
-                    .withRotationalRate((-controller.getRightX() * MaxAngularRate) * 0.5) // Drive counterclockwise with negative X (left)
-            )
-        );
+    drivetrain.setDefaultCommand(
+      // Drivetrain will execute this command periodically
+      drivetrain.applyRequest(() ->
+            drive.withVelocityX((-1 * Math.abs(filter.calculate(controller.getLeftY())) * filter.calculate(controller.getLeftY()) * MaxSpeed) * 0.5) // Drive forward with negative Y (forward)
+              .withVelocityY((-1 * Math.abs(filter.calculate(controller.getLeftX())) * filter.calculate(controller.getLeftX()) * MaxSpeed) * 0.5) // Drive left with negative X (left)
+              .withRotationalRate((-controller.getRightX() * MaxAngularRate) * 0.5) // Drive counterclockwise with negative X (left)
+      )
+  );
 
 
         // reset the field-centric heading on left bumper press
