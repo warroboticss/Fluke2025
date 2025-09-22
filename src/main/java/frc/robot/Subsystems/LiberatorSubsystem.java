@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class LiberatorSubsystem extends SubsystemBase {
     private static TalonFX liberatorMotor1 = new TalonFX(15, "rio");
     private static TalonFX liberatorMotor2 = new TalonFX(16, "rio");
-    private static TalonFX algaeMotor = new TalonFX(19, "rio");
+    //private static TalonFX algaeMotor = new TalonFX(19, "rio");
     private LaserCan lc = new LaserCan(20);
     Orchestra m_orchestra = new Orchestra(); 
     // PositionDutyCycle pid = new PositionDutyCycle(0);
@@ -57,9 +57,6 @@ public class LiberatorSubsystem extends SubsystemBase {
         motionMagicConfigs.MotionMagicAcceleration = 160; // Target acceleration of 160 rps/s (0.5 seconds)
         motionMagicConfigs.MotionMagicJerk = 1600; // Target jerk of 1600 rps/s/s (0.1 seconds)
 
-        algaeMotor.setNeutralMode(NeutralModeValue.Brake);
-        algaeMotor.getConfigurator().apply(cfg);
-        algaeMotor.setPosition(0);
         coralToggle = false;
     }
 
@@ -173,55 +170,6 @@ public class LiberatorSubsystem extends SubsystemBase {
         }
     }
     }
-
-
-    // ALGAE REMOVAL
-    public void removeAlgae(){
-       //algaeMotor.set(algaePID.calculate(getAlgaePosition(), -42.66));
-       algaeMotor.setControl(algaePID.withPosition(-42.66));
-    }
-
-    public void slightAlgae(){
-        algaeMotor.setControl(algaePID.withPosition(-33));
-    }
-
-    public void resetAlgae(){
-        algaeMotor.setControl(algaePID.withPosition(0));
-    }
-
-    public double getAlgaePosition(){
-        return algaeMotor.getPosition().getValueAsDouble();
-    }
-
-    public void manualAlgaeUp(){
-        algaeMotor.set(0.3);
-    }
-
-    public void manualAlgaeDown(){
-        algaeMotor.set(-0.3);
-    }
-
-    public void setAlgae(double speed){
-        algaeMotor.set(speed);
-    }
-
-    // public boolean algaeAtPosition(){
-    //     return algaePID.atSetpoint();
-    // }
-
-
-    // public void test(){
-    //     System.out.println("RAN");
-    //     time.start();
-    //     algaeMotor.set(0.2);
-
-    //     if(time.get() > 0.5){
-    //         algaeMotor.set(0);
-    //         time.stop();
-    //         time.reset();
-    //     }
-
-    // }
 
     
 }

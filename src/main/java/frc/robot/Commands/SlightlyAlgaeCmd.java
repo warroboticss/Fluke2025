@@ -29,12 +29,12 @@ public class SlightlyAlgaeCmd extends Command{
     @Override
     public void execute(){
         System.out.println("RAN");
-        liberator.slightAlgae();
+        //liberator.slightAlgae();
     }
 
-    public boolean isFinished(){
-        return (liberator.getAlgaePosition() <= -30) || time.get() > 1;
-    }
+    // public boolean isFinished(){
+    //     return (liberator.getAlgaePosition() <= -30) || time.get() > 1;
+    // }
 
     @Override
     public void end(boolean interrupted) {

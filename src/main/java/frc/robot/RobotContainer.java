@@ -30,13 +30,10 @@ import frc.robot.Commands.ElevatorCmd;
 import frc.robot.Commands.HomeElevatorCmd;
 import frc.robot.Commands.LiberateCommand;
 // import frc.robot.Commands.LiberateStop;
-import frc.robot.Commands.ManualAlgaeDown;
-import frc.robot.Commands.ManualAlgaeUp;
 import frc.robot.Commands.ManualElevatorDown;
 import frc.robot.Commands.ManualElevatorUp;
 // import frc.robot.Commands.ManualLiberate;
 import frc.robot.Commands.ManualLiberatorCmd;
-import frc.robot.Commands.RemoveAlgae;
 import frc.robot.Commands.ReverseIndexCmd;
 // import frc.robot.Commands.RobotOriented;
 import frc.robot.Commands.ScoreCmd;
@@ -129,8 +126,6 @@ public class RobotContainer {
         //controller.leftBumper().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
 
 
-        //controller.rightTrigger().onTrue(new AlgaeRoutineCmd(elevatorSubsystem, liberatorSubsystem, 2));
-        //controller.leftTrigger().onTrue(new AlgaeRoutineCmd(elevatorSubsystem, liberatorSubsystem, 1));
        a.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 1));
        b.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 2));
        x.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 3));
@@ -158,8 +153,6 @@ public class RobotContainer {
 
 
         // manual controls
-        controller.povUp().whileTrue(new ManualAlgaeUp(liberatorSubsystem));
-        controller.povDown().whileTrue(new ManualAlgaeDown(liberatorSubsystem));
 
         // manualController.a().onTrue(liberatorSubsystem.runOnce(() -> liberatorSubsystem.increaseLeft()));
         // manualController.b().onTrue(liberatorSubsystem.runOnce(() -> liberatorSubsystem.increaseRight()));
