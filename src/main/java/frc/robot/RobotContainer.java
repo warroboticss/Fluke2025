@@ -10,49 +10,32 @@ import static edu.wpi.first.units.Units.RotationsPerSecond;
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
-import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
-import edu.wpi.first.math.geometry.Rotation2d;
+
+import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.math.filter.SlewRateLimiter;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 // import frc.robot.Commands.AlgaeElevatorCmd;
 // import frc.robot.Commands.AlgaeRoutineCmd;
 import frc.robot.Commands.DefaultElevatorCmd;
 import frc.robot.Commands.DefaultLiberatorCmd;
-import frc.robot.Commands.ElevatorCmd;
-import frc.robot.Commands.HomeElevatorCmd;
-import frc.robot.Commands.LiberateCommand;
-// import frc.robot.Commands.LiberateStop;
-import frc.robot.Commands.ManualElevatorDown;
-import frc.robot.Commands.ManualElevatorUp;
-// import frc.robot.Commands.ManualLiberate;
-import frc.robot.Commands.ManualLiberatorCmd;
-import frc.robot.Commands.ReverseIndexCmd;
+import frc.robot.Commands.IndexCmd;
 // import frc.robot.Commands.RobotOriented;
 import frc.robot.Commands.ScoreCmd;
-import frc.robot.Commands.l4ElevatorCmd;
-import frc.robot.Commands.IndexCmd;
 import frc.robot.Commands.UpdateCoordinatesCommand;
 //import frc.robot.Commands.LimelightCmd;
 import frc.robot.Subsystems.CommandSwerveDrivetrain;
+import frc.robot.Subsystems.CoralIndexer;
 import frc.robot.Subsystems.ElevatorSubsystem;
 import frc.robot.Subsystems.LiberatorSubsystem;
-import frc.robot.Subsystems.CoralIndexer;
 import frc.robot.Subsystems.vision.LimelightSubsystem;
-import frc.robot.Subsystems.vision.LimelightHelpers;
 import frc.robot.generated.TunerConstants;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
+import frc.robot.Commands.ReverseIndexCmd;
 
 
 
@@ -114,12 +97,16 @@ public class RobotContainer {
   private void configureBindings() {
     drivetrain.setDefaultCommand(
       // Drivetrain will execute this command periodically
+      // drivetrain.applyRequest(() ->
+      //       drive.withVelocityX((-1 * Math.abs(filter.calculate(controller.getLeftY())) * filter.calculate(controller.getLeftY()) * MaxSpeed) * 0.5) // Drive forward with negative Y (forward)
+      //         .withVelocityY((-1 * Math.abs(filter.calculate(controller.getLeftX())) * filter.calculate(controller.getLeftX()) * MaxSpeed) * 0.5) // Drive left with negative X (left)
+      //         .withRotationalRate((-controller.getRightX() * MaxAngularRate) * 0.5) // Drive counterclockwise with negative X (left)
+      // )
       drivetrain.applyRequest(() ->
-            drive.withVelocityX((-1 * Math.abs(filter.calculate(controller.getLeftY())) * filter.calculate(controller.getLeftY()) * MaxSpeed) * 0.5) // Drive forward with negative Y (forward)
-              .withVelocityY((-1 * Math.abs(filter.calculate(controller.getLeftX())) * filter.calculate(controller.getLeftX()) * MaxSpeed) * 0.5) // Drive left with negative X (left)
-              .withRotationalRate((-controller.getRightX() * MaxAngularRate) * 0.5) // Drive counterclockwise with negative X (left)
-      )
-  );
+        drive.withVelocityX(-controller.getLeftY() * MaxSpeed * 0.5)
+          .withVelocityY(-controller.getLeftX() * MaxSpeed * 0.5)
+          .withRotationalRate(-controller.getRightX() * MaxAngularRate * 0.7)
+  ));
 
 
         // reset the field-centric heading on left bumper press
@@ -131,7 +118,7 @@ public class RobotContainer {
        x.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 3));
        y.onTrue(new ScoreCmd(elevatorSubsystem, liberatorSubsystem, 4));
        
-      /*  controller.rightBumper().whileTrue(drivetrain.applyRequest(() -> 
+        controller.rightBumper().whileTrue(drivetrain.applyRequest(() -> 
        driveRobotOriented.withVelocityX(0.0)
        .withVelocityY(-0.3)
        .withRotationalRate(0.0)
@@ -141,7 +128,7 @@ public class RobotContainer {
        driveRobotOriented.withVelocityX(0.0)
        .withVelocityY(0.3)
        .withRotationalRate(0.0)
-       )); */
+       )); 
 
        controller.leftTrigger().onTrue(drivetrain.runOnce(() -> drivetrain.seedFieldCentric()));
        controller.rightTrigger().whileTrue(new ReverseIndexCmd(coralIndexer));
